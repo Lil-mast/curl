@@ -107,12 +107,16 @@ export default function OnboardingPage() {
 
       {/* Main Questionnaire */}
       <main className="max-w-xl w-full mx-auto my-auto py-6">
-        {/* Progress Bar */}
-        <div className="w-full h-1 bg-stone-200 rounded-full mb-8 overflow-hidden">
-          <div
-            className="h-full bg-emerald-800 transition-all duration-300 rounded-full"
-            style={{ width: `${(step / 5) * 100}%` }}
-          />
+        {/* Sleek Segmented Progress Line */}
+        <div className="flex items-center gap-1.5 w-full mb-8">
+          {[1, 2, 3, 4, 5].map((s) => (
+            <div
+              key={s}
+              className={`h-1 flex-1 rounded-full transition-all duration-300 ${
+                s <= step ? "bg-emerald-800" : "bg-stone-300/60"
+              }`}
+            />
+          ))}
         </div>
 
         {/* STEP 1: LANGUAGE PREFERENCE */}

@@ -43,7 +43,8 @@ export function FinalCTA() {
           <p className="cta-lede">{t.cta.lede}</p>
           <Link
             href="/onboarding"
-            className="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-[#f6f1e8] text-[#1c1915] font-bold text-sm hover:bg-white transition-colors"
+            className="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white text-black font-bold text-sm hover:bg-stone-100 transition-all shadow-md active:scale-95"
+            style={{ color: "#000000", backgroundColor: "#ffffff" }}
           >
             {t.cta.button} →
           </Link>
