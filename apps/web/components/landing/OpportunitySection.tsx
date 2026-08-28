@@ -19,7 +19,6 @@ export function OpportunitySection() {
   return (
     <section className="section" id="opportunities" aria-labelledby="opp-title">
       <div className="wrap">
-        <p className="section-kicker">{t.opportunities.kicker}</p>
         <h2 className="section-title" id="opp-title">
           {t.opportunities.title}
         </h2>

@@ -11,7 +11,6 @@ export function HowItWorks() {
   return (
     <section className="section" id="how-it-works" aria-labelledby="how-title">
       <div className="wrap">
-        <p className="section-kicker">{t.how.kicker}</p>
         <h2 className="section-title" id="how-title">
           {t.how.title}
         </h2>

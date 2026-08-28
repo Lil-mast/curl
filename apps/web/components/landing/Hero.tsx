@@ -12,7 +12,6 @@ export function Hero() {
     <section className="hero" id="top">
       <div className="wrap hero-grid">
         <div className="hero-copy">
-          <p className="eyebrow">{t.hero.kicker}</p>
           <h1>
             {t.hero.title1}
             <br />
