@@ -1,6 +1,21 @@
 # apps/web
 
-**Next.js** client for Maktab AI. Phone-first. Scaffold when **T1.2** starts — no application code in the repo yet.
+**Next.js** client for Maktab AI. Phone-first public landing page (T1.2).
+
+## Run locally
+
+```bash
+cd apps/web
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+```bash
+npm run build
+npm run lint
+```
 
 ## Belongs here
 
@@ -9,6 +24,8 @@
 - Language toggle
 - Calls Flask via `NEXT_PUBLIC_API_URL`
 - Display of next steps / CV draft text (no persistence by default)
+
+This folder currently ships the **marketing landing page only**. `/assistant` and `/opportunities` links are placeholders.
 
 ## Does not belong here
 
