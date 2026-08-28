@@ -2,6 +2,7 @@
 
 import { CommunityImpact } from "./CommunityImpact";
 import { FinalCTA } from "./FinalCTA";
+import { Footer } from "./Footer";
 import { Hero } from "./Hero";
 import { HowItWorks } from "./HowItWorks";
 import { MissionStrip } from "./MissionStrip";
@@ -23,6 +24,7 @@ export function LandingPage() {
         <CommunityImpact />
         <FinalCTA />
       </main>
+      <Footer />
     </div>
   );
 }
