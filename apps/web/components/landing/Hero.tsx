@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { Mic, Globe, Smartphone } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
 import { VoiceMockup } from "./VoiceMockup";
 
@@ -30,17 +27,6 @@ export function Hero() {
             >
               {t.hero.secondary}
             </Link>
-          </div>
-          <div className="hero-note">
-            <span>
-              <Mic className="w-4 h-4 inline-block mr-1 text-emerald-800" /> {t.hero.note1}
-            </span>
-            <span>
-              <Smartphone className="w-4 h-4 inline-block mr-1 text-emerald-800" /> {t.hero.note2}
-            </span>
-            <span>
-              <Globe className="w-4 h-4 inline-block mr-1 text-emerald-800" /> {t.hero.note3}
-            </span>
           </div>
         </div>
         <VoiceMockup />
