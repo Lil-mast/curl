@@ -5,11 +5,20 @@ from dotenv import load_dotenv
 from routes.health import health_bp
 from routes.ask import ask_bp
 from routes.voice import voice_bp
+from routes.audio import audio_bp
 from services.orchestrator import Orchestrator
 from services.adapters.knowledge import KnowledgeRetrieverNotReady
 from services.adapters.voice import VoiceServiceNotReady
 
 load_dotenv()
+
+
+def _default_voice_service():
+    """Use ElevenLabsVoiceAdapter when the API key is present; stub otherwise."""
+    if os.getenv("ELEVENLABS_API_KEY"):
+        from services.adapters.elevenlabs_voice import ElevenLabsVoiceAdapter
+        return ElevenLabsVoiceAdapter()
+    return VoiceServiceNotReady()
 
 
 def create_app(
@@ -25,12 +34,13 @@ def create_app(
     # or when Faith/Isaac's modules are ready.
     app.orchestrator = Orchestrator(
         knowledge=knowledge_retriever or KnowledgeRetrieverNotReady(),
-        voice=voice_service or VoiceServiceNotReady(),
+        voice=voice_service or _default_voice_service(),
     )
 
     app.register_blueprint(health_bp)
     app.register_blueprint(ask_bp)
     app.register_blueprint(voice_bp)
+    app.register_blueprint(audio_bp)
 
     @app.errorhandler(404)
     def not_found(_):
