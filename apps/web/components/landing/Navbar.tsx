@@ -92,7 +92,7 @@ export function Navbar() {
         <div className="nav-actions">
           {languageButton}
           <Link
-            href="/assistant"
+            href="/onboarding"
             className="inline-flex items-center px-4 py-2 rounded-full bg-emerald-800 text-white font-semibold text-xs hover:bg-emerald-900 transition-colors nav-cta"
           >
             {t.nav.try}
@@ -130,7 +130,7 @@ export function Navbar() {
             </div>
             <div className="pt-6">
               <Link
-                href="/assistant"
+                href="/onboarding"
                 onClick={() => setOpen(false)}
                 className="w-full inline-flex items-center justify-center px-4 py-3 rounded-full bg-emerald-800 text-white font-semibold text-sm hover:bg-emerald-900 transition-colors"
               >

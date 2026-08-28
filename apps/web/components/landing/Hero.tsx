@@ -20,7 +20,7 @@ export function Hero() {
           </h1>
           <div className="hero-actions">
             <Link
-              href="/assistant"
+              href="/onboarding"
               className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-emerald-800 text-white font-semibold text-sm hover:bg-emerald-900 transition-colors shadow-sm"
             >
               {t.hero.primary} →

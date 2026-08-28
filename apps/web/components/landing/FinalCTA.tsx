@@ -42,7 +42,7 @@ export function FinalCTA() {
           </div>
           <p className="cta-lede">{t.cta.lede}</p>
           <Link
-            href="/assistant"
+            href="/onboarding"
             className="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-[#f6f1e8] text-[#1c1915] font-bold text-sm hover:bg-white transition-colors"
           >
             {t.cta.button} →
