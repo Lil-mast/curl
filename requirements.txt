@@ -1,0 +1,15 @@
+# Maktab AI — Python dependencies
+# Install with: pip install -r requirements.txt
+# Python 3.11+ required
+
+# ── ElevenLabs voice service (Isaac — services/voice/) ──────────────────────
+elevenlabs>=1.54.0          # STT (scribe_v2) + TTS (eleven_v3)
+httpx>=0.27.0               # HTTP client used by ElevenLabs SDK; pinned for timeout handling
+python-dotenv>=1.0.0        # Load .env file for local development
+
+# ── Flask API (Alvine — services/api/) ──────────────────────────────────────
+flask>=3.0.0
+flask-cors>=4.0.0
+
+# ── Database (Faith — services/api/) ────────────────────────────────────────
+psycopg2-binary>=2.9.9      # PostgreSQL adapter for Neon
