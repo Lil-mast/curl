@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from schemas.requests import validate_ask
 
 ask_bp = Blueprint("ask", __name__)
@@ -14,14 +14,28 @@ def ask():
     if errors:
         return _error("INVALID_REQUEST", errors[0], 400)
 
-    # --- STUB: knowledge retrieval not yet implemented (Faith / T3.3) ---
-    # --- STUB: language model phrasing not yet implemented            ---
+    result = current_app.orchestrator.handle_ask(
+        message=data["message"].strip(),
+        language=data.get("language", "en"),
+        domain=data.get("domain"),
+        session_id=data.get("session_id"),
+    )
+
+    if result.referred:
+        return jsonify({
+            "referred": True,
+            "reason": result.refer_reason,
+            "message": result.refer_message,
+            "language": result.language,
+            "session_id": result.session_id,
+        }), 200
+
     return jsonify({
-        "answer": None,
-        "language": data.get("language", "en"),
-        "sources": [],
-        "session_id": data.get("session_id"),
-        "_stub": True,
+        "answer": result.answer,
+        "language": result.language,
+        "sources": result.sources,
+        "session_id": result.session_id,
+        "disclaimer": result.disclaimer,
     }), 200
 
 

@@ -25,7 +25,9 @@ def test_ask_valid_english(client):
     assert r.status_code == 200
     body = r.get_json()
     assert body["language"] == "en"
-    assert body["_stub"] is True
+    assert "answer" in body
+    assert "sources" in body
+    assert "session_id" in body
 
 
 def test_ask_valid_somali(client):
@@ -97,15 +99,14 @@ def _audio_file():
 
 
 def test_voice_valid_request(client):
+    # Voice service is not yet ready (Isaac / T2.2); expect 503 with a clear error code.
     r = client.post(
         "/api/voice",
         data={"audio": _audio_file(), "language": "en"},
         content_type="multipart/form-data",
     )
-    assert r.status_code == 200
-    body = r.get_json()
-    assert body["_stub"] is True
-    assert body["language"] == "en"
+    assert r.status_code == 503
+    _assert_error(r, "VOICE_SERVICE_UNAVAILABLE")
 
 
 def test_voice_somali_language(client):
@@ -114,8 +115,8 @@ def test_voice_somali_language(client):
         data={"audio": _audio_file(), "language": "so"},
         content_type="multipart/form-data",
     )
-    assert r.status_code == 200
-    assert r.get_json()["language"] == "so"
+    assert r.status_code == 503
+    _assert_error(r, "VOICE_SERVICE_UNAVAILABLE")
 
 
 def test_voice_with_session_id(client):
@@ -124,8 +125,8 @@ def test_voice_with_session_id(client):
         data={"audio": _audio_file(), "session_id": "sess-xyz"},
         content_type="multipart/form-data",
     )
-    assert r.status_code == 200
-    assert r.get_json()["session_id"] == "sess-xyz"
+    assert r.status_code == 503
+    _assert_error(r, "VOICE_SERVICE_UNAVAILABLE")
 
 
 def test_voice_missing_audio(client):

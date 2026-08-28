@@ -5,15 +5,28 @@ from dotenv import load_dotenv
 from routes.health import health_bp
 from routes.ask import ask_bp
 from routes.voice import voice_bp
+from services.orchestrator import Orchestrator
+from services.adapters.knowledge import KnowledgeRetrieverNotReady
+from services.adapters.voice import VoiceServiceNotReady
 
 load_dotenv()
 
 
-def create_app():
+def create_app(
+    knowledge_retriever=None,
+    voice_service=None,
+):
     app = Flask(__name__)
 
     allowed_origin = os.getenv("ALLOWED_ORIGIN", "")
     CORS(app, origins=[allowed_origin] if allowed_origin else [])
+
+    # Build orchestrator — callers may inject real implementations for testing
+    # or when Faith/Isaac's modules are ready.
+    app.orchestrator = Orchestrator(
+        knowledge=knowledge_retriever or KnowledgeRetrieverNotReady(),
+        voice=voice_service or VoiceServiceNotReady(),
+    )
 
     app.register_blueprint(health_bp)
     app.register_blueprint(ask_bp)
