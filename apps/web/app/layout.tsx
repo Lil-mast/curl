@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
-import { Fraunces, Outfit } from "next/font/google";
-import { AppShell } from "@/components/app-shell";
+import type { Metadata, Viewport } from "next";
+import { Fraunces, Outfit, Plus_Jakarta_Sans } from "next/font/google";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { AppProvider } from "@/lib/store";
+import { ConditionalShell } from "@/components/conditional-shell";
+import { Providers } from "./providers";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -11,21 +13,39 @@ const outfit = Outfit({
 
 const fraunces = Fraunces({
   subsets: ["latin"],
-  variable: "--font-fraunces"
+  variable: "--font-fraunces",
+  display: "swap"
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
+  display: "swap"
 });
 
 export const metadata: Metadata = {
-  title: "Maktab dashboard",
-  description: "Sample dashboard for opportunities, scholarships, education, jobs, and the Maktab AI assistant."
+  title: "Maktab AI — Your Voice. Your Opportunity.",
+  description:
+    "Maktab AI helps refugees and underserved communities discover scholarships, jobs, education and opportunities — simply by speaking. Somali and English."
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${outfit.variable} ${fraunces.variable} font-sans antialiased`}>
-        <AppProvider>
-          <AppShell>{children}</AppShell>
-        </AppProvider>
+    <html lang="en" className={`${fraunces.variable} ${outfit.variable} ${jakarta.variable}`}>
+      <body className="font-sans antialiased">
+        <AntdRegistry>
+          <Providers>
+            <AppProvider>
+              <ConditionalShell>{children}</ConditionalShell>
+            </AppProvider>
+          </Providers>
+        </AntdRegistry>
       </body>
     </html>
   );

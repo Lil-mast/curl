@@ -8,7 +8,7 @@ import { useApp } from "@/lib/store";
 import { IconBrief, IconCap, IconDoc, IconGrid, IconHome, IconMic, IconSpark, IconUser } from "./icons";
 
 const NAV = [
-  { href: "/", key: "overview" as const, icon: IconHome },
+  { href: "/dashboard", key: "overview" as const, icon: IconHome },
   { href: "/profile", key: "profile" as const, icon: IconUser },
   { href: "/opportunities", key: "opportunities" as const, icon: IconGrid },
   { href: "/scholarships", key: "scholarships" as const, icon: IconCap },
@@ -47,8 +47,8 @@ export function AppShell({ children }: { children: ReactNode }) {
           {NAV.map((item) => {
             const href = item.key === "details" ? detailsHref : item.href;
             const active =
-              item.href === "/"
-                ? pathname === "/"
+              item.href === "/dashboard"
+                ? pathname === "/dashboard"
                 : item.key === "details"
                   ? pathname.startsWith("/opportunities/") && pathname !== "/opportunities"
                   : pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -100,7 +100,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         <nav className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-5 border-t border-line bg-card px-1 py-2 lg:hidden">
           {[
-            { href: "/", label: t("overview", lang), icon: IconHome },
+            { href: "/dashboard", label: t("overview", lang), icon: IconHome },
             { href: "/opportunities", label: t("opportunities", lang), icon: IconGrid },
             { href: detailsHref, label: t("details", lang), icon: IconDoc },
             { href: "/assistant", label: t("assistant", lang), icon: IconMic },
