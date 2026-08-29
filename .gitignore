@@ -12,3 +12,16 @@ venv/
 
 # Test audio output
 services/voice/test_*.mp3
+node_modules/
+.next/
+out/
+dist/
+.turbo/
+*.log
+.env
+.env.local
+.env.*
+!.env.example
+.DS_Store
+.vercel
+

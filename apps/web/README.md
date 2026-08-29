@@ -1,22 +1,34 @@
 # apps/web
 
-**Next.js** client for Maktab AI. Phone-first. Scaffold when **T1.2** starts — no application code in the repo yet.
+**Next.js** client for Maktab AI with public landing page and interactive community dashboard.
 
-## Belongs here
+## Run locally
 
-- App Router pages: landing (Somali + English), talk screen
-- Talk control, mute/stop, captions
-- Language toggle
-- Calls Flask via `NEXT_PUBLIC_API_URL`
-- Display of next steps / CV draft text (no persistence by default)
+```bash
+cd apps/web
+npm install
+npm run dev
+```
 
-## Does not belong here
+Open [http://localhost:3000](http://localhost:3000).
 
-- ElevenLabs API keys
-- `DATABASE_URL` or any Postgres client
-- Knowledge files as the runtime source of truth
-- Safety policy (Flask + `docs/privacy.md`)
+```bash
+npm run build
+npm run lint
+```
 
-## Tasks
+## Screens
 
-T1.2 scaffold → T2.2–T2.6 voice UX → T5.1 disclaimer → T5.6 accessibility.
+| Route | What it does |
+| --- | --- |
+| `/` | Landing page / Overview |
+| `/profile` | Name, city, interests — saved on this device only |
+| `/opportunities` | Searchable sample listings |
+| `/opportunities/[id]` | Opportunity details + assistant for that listing |
+| `/scholarships` | Sample grants, with eligibility caution |
+| `/education` | Classes and school help |
+| `/jobs` | Sample job cards |
+| `/assistant` | Talk (browser speech) or type |
+
+Listings are **samples** so the dashboard can be used end-to-end. Confirm anything real with the organisation. The assistant answers from those samples only — it will not invent a clinic or say you qualify.
+
