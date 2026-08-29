@@ -1,13 +1,14 @@
-node_modules/
-.next/
-out/
-dist/
-.turbo/
-*.log
+
+# Local environment — NEVER commit real secrets
 .env
 .env.local
-.env.*
-!.env.example
-.DS_Store
-.vercel
 
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Test audio output
+services/voice/test_*.mp3
