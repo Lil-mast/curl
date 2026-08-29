@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, current_app
-from schemas.requests import validate_ask
+from services.api.schemas.requests import validate_ask
 
 ask_bp = Blueprint("ask", __name__)
 

@@ -27,11 +27,11 @@ The orchestrator never:
 
 from dataclasses import dataclass, field
 
-from safety import policy as safety_policy
-from safety.session import get_or_create, record_turn, mark_disclaimer_shown
-from safety.transparency import get_disclaimer
-from services.adapters.knowledge import BaseKnowledgeRetriever, KnowledgeEntry
-from services.adapters.voice import BaseVoiceService
+from services.api.safety import policy as safety_policy
+from services.api.safety.session import get_or_create, record_turn, mark_disclaimer_shown
+from services.api.safety.transparency import get_disclaimer
+from services.api.services.adapters.knowledge import BaseKnowledgeRetriever, KnowledgeEntry
+from services.api.services.adapters.voice import BaseVoiceService
 
 _NO_KNOWLEDGE_EN = (
     "I don't have specific information about that right now. "

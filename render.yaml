@@ -1,0 +1,13 @@
+# Maktab AI frontend — Render static site (CDN)
+# Dashboard: New → Blueprint → this repo → branch `frontend`
+
+services:
+  - type: web
+    name: maktab-web
+    runtime: static
+    branch: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./out
+    envVars:
+      - key: NODE_VERSION
+        value: "22"

@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, current_app
-from schemas.requests import validate_voice
+from services.api.schemas.requests import validate_voice
 
 voice_bp = Blueprint("voice", __name__)
 

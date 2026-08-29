@@ -1,5 +1,5 @@
 from flask import Blueprint, Response, jsonify
-from services import audio_store
+from services.api.services import audio_store
 
 audio_bp = Blueprint("audio", __name__)
 

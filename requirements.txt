@@ -12,4 +12,8 @@ flask>=3.0.0
 flask-cors>=4.0.0
 
 # ── Database (Faith — services/api/) ────────────────────────────────────────
-psycopg2-binary>=2.9.9      # PostgreSQL adapter for Neon
+psycopg[binary]>=3.2.0      # PostgreSQL adapter used by services.api.db
+psycopg-pool>=3.2.0         # Connection pool for runtime queries
+
+# ── Flask HTTP (Render) ─────────────────────────────────────────────────────
+gunicorn>=22.0.0

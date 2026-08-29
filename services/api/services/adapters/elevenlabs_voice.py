@@ -23,8 +23,8 @@ This adapter NEVER:
     the orchestrator asks)
 """
 
-from services.adapters.voice import BaseVoiceService, TranscriptionResult, SynthesisResult
-from services import audio_store
+from services.api.services.adapters.voice import BaseVoiceService, TranscriptionResult, SynthesisResult
+from services.api.services import audio_store
 
 
 class ElevenLabsVoiceAdapter(BaseVoiceService):
