@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
@@ -38,11 +39,18 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="dashboard-root min-h-dvh bg-paper lg:grid lg:grid-cols-[16.5rem_1fr]">
       <aside className="hidden flex-col bg-pine text-paper lg:flex">
         <div className="px-5 py-6">
-          <Link href="/" className="block">
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-gold">
-              Maktab AI
-            </p>
-            <p className="display mt-2 text-3xl">Maktab</p>
+          <Link
+            href="/"
+            className="mb-3 flex items-center justify-center rounded-2xl bg-paper px-3 py-3"
+          >
+            <Image
+              src="/logo.png"
+              alt="Maktab AI"
+              width={160}
+              height={66}
+              className="h-14 w-auto object-contain"
+              priority
+            />
           </Link>
           <p className="mt-1 text-sm text-sage">
             {!ready
@@ -111,11 +119,15 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <div className="flex min-h-dvh flex-col">
         <header className="sticky top-0 z-20 flex items-center justify-between border-b border-line bg-paper/90 px-4 py-3 backdrop-blur lg:hidden">
-          <Link href="/">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-clay">
-              Maktab AI
-            </p>
-            <p className="display text-xl">Maktab</p>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo.png"
+              alt="Maktab AI"
+              width={120}
+              height={50}
+              className="h-10 w-auto object-contain"
+              priority
+            />
           </Link>
           <div className="flex gap-1">
             <button

@@ -1,6 +1,7 @@
 "use client";
 
 import { AudioOutlined } from "@ant-design/icons";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useLanguage } from "./LanguageContext";
 
@@ -139,7 +140,7 @@ export function VoiceMockup({ variant = "phone" }: VoiceMockupProps) {
         <div className="phone-head" style={{ paddingLeft: 0, paddingRight: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div className="phone-avatar" aria-hidden="true">
-              M
+              <Image src="/logo.png" alt="" width={28} height={28} />
             </div>
             <strong>Maktab AI</strong>
           </div>
@@ -159,7 +160,7 @@ export function VoiceMockup({ variant = "phone" }: VoiceMockupProps) {
       <div className="phone-head">
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div className="phone-avatar" aria-hidden="true">
-            M
+            <Image src="/logo.png" alt="" width={28} height={28} />
           </div>
           <strong>Maktab AI</strong>
         </div>

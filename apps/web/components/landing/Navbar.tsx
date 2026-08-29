@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Button, Drawer, Dropdown } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
@@ -82,7 +83,16 @@ export function Navbar() {
         </div>
       </div>
       <Drawer
-        title="Maktab AI"
+        title={
+          <Image
+            src="/logo.png"
+            alt="Maktab AI"
+            width={120}
+            height={50}
+            className="brand-logo"
+            style={{ height: 40, width: "auto" }}
+          />
+        }
         placement="right"
         open={open}
         onClose={() => setOpen(false)}
