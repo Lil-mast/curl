@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Plus_Jakarta_Sans, Outfit } from "next/font/google";
+import { Fraunces, Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "./providers";
+import "./dashboard.css";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -25,6 +26,16 @@ export const metadata: Metadata = {
   title: "Maktab AI — Your Voice. Your Opportunity.",
   description:
     "Maktab AI helps refugees and underserved communities discover scholarships, jobs, education and opportunities — simply by speaking. Somali and English.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
+  openGraph: {
+    title: "Maktab AI — Your Voice. Your Opportunity.",
+    description:
+      "Voice-first AI for scholarships, jobs, education, and community resources — in Somali and English.",
+    images: ["/logo.png"],
+  },
 };
 
 export const viewport: Viewport = {

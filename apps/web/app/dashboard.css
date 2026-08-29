@@ -1,0 +1,129 @@
+@layer theme, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@theme {
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --color-ink: #13261f;
+  --color-paper: #f3eee4;
+  --color-card: #fffdf8;
+  --color-pine: #17352c;
+  --color-pine-2: #21483c;
+  --color-clay: #c4532a;
+  --color-clay-dark: #9b3c1c;
+  --color-sage: #d7e2d1;
+  --color-gold: #e3c178;
+  --color-muted: #5e6d66;
+  --color-line: #e2d8cb;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+}
+
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: 1.25rem;
+  box-shadow: 0 1px 0 rgba(19, 38, 31, 0.04);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition:
+    transform 0.12s ease,
+    background 0.12s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--color-clay);
+  color: #fffaf4;
+}
+
+.btn-primary:hover {
+  background: var(--color-clay-dark);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-line);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--color-sage);
+  color: var(--color-pine);
+}
+
+.dashboard-root {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+}
+
+.dashboard-root input,
+.dashboard-root textarea,
+.dashboard-root select {
+  width: 100%;
+  border: 1px solid var(--color-line);
+  background: #fff;
+  border-radius: 0.9rem;
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+  color: inherit;
+}
+
+.dashboard-root input:focus,
+.dashboard-root textarea:focus,
+.dashboard-root select:focus {
+  outline: 2px solid #c4532a55;
+  border-color: var(--color-clay);
+}
+
+.prose-steps {
+  counter-reset: step;
+}
+
+.prose-steps li {
+  position: relative;
+  padding-left: 2.2rem;
+  margin-bottom: 0.7rem;
+}
+
+.prose-steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 999px;
+  background: var(--color-pine);
+  color: #f6f1e8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}

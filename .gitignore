@@ -1,13 +1,23 @@
-# Frontend
+# Frontend / Node
 node_modules/
 .next/
 out/
 dist/
 .turbo/
 
-# Local environment — NEVER commit real secrets
+# Frontend / deployment
+.vercel/
+
+# OS / editor
+.DS_Store
+*.log
+
+# Environment / secrets
 .env
 .env.local
+.env*.local
+.env.*
+!.env.example
 
 # Python
 __pycache__/

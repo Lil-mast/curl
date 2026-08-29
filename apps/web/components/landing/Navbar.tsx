@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Brand } from "./BrandMark";
@@ -115,7 +116,13 @@ export function Navbar() {
           <div className="w-72 bg-[#f6f1e8] h-full p-6 flex flex-col justify-between overflow-y-auto">
             <div>
               <div className="flex items-center justify-between pb-4 border-b border-stone-200">
-                <span className="font-bold text-stone-900">Maktab AI</span>
+                <Image
+                  src="/logo.png"
+                  alt="Maktab AI"
+                  width={120}
+                  height={50}
+                  className="h-10 w-auto object-contain"
+                />
                 <button
                   type="button"
                   onClick={() => setOpen(false)}

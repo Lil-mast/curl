@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Mic, Wifi, Battery, Signal } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
@@ -139,7 +140,7 @@ export function VoiceMockup({ variant = "phone" }: VoiceMockupProps) {
         <div className="phone-head" style={{ paddingLeft: 0, paddingRight: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div className="phone-avatar" aria-hidden="true">
-              M
+              <Image src="/logo.png" alt="" width={28} height={28} />
             </div>
             <strong>Maktab AI</strong>
           </div>
@@ -152,22 +153,16 @@ export function VoiceMockup({ variant = "phone" }: VoiceMockupProps) {
 
   return (
     <div className="relative mx-auto" aria-label="Maktab AI voice assistant preview">
-      {/* Phone Outer Chassis / Hardware Shell */}
       <div className="w-[300px] sm:w-[324px] bg-[#1a1816] p-3 rounded-[46px] shadow-2xl ring-1 ring-stone-700/40 relative">
-        {/* Left Hardware Buttons (Volume) */}
         <div className="absolute -left-1 top-24 w-1 h-8 bg-stone-700 rounded-l-md" />
         <div className="absolute -left-1 top-36 w-1 h-8 bg-stone-700 rounded-l-md" />
-        {/* Right Hardware Button (Power) */}
         <div className="absolute -right-1 top-28 w-1 h-12 bg-stone-700 rounded-r-md" />
 
-        {/* Inner Phone Screen */}
         <div className="bg-[#fffdf9] rounded-[38px] overflow-hidden p-3.5 flex flex-col justify-between min-h-[490px] shadow-inner relative border border-stone-200/60">
-          {/* Dynamic Island / Notch */}
           <div className="w-24 h-4 bg-stone-900 rounded-full mx-auto flex items-center justify-end px-2 mb-1.5 shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-stone-700" />
           </div>
 
-          {/* Top Status Bar (Time, Signal, Wifi, Battery) */}
           <div className="flex items-center justify-between text-[11px] font-semibold text-stone-600 px-2 pt-0.5 pb-2 shrink-0">
             <span>9:41</span>
             <div className="flex items-center gap-1.5 text-stone-700">
@@ -180,14 +175,15 @@ export function VoiceMockup({ variant = "phone" }: VoiceMockupProps) {
             </div>
           </div>
 
-          {/* App Header Inside Screen */}
           <div className="flex items-center justify-between px-1 py-1.5 pb-2 border-b border-stone-100 shrink-0">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-emerald-800 text-white font-bold text-xs flex items-center justify-center shadow-xs">
-                M
+              <div className="phone-avatar" aria-hidden="true">
+                <Image src="/logo.png" alt="" width={28} height={28} />
               </div>
               <div>
-                <strong className="text-xs text-stone-900 block leading-tight">Maktab AI</strong>
+                <strong className="text-xs text-stone-900 block leading-tight">
+                  Maktab AI
+                </strong>
                 <span className="text-[10px] text-emerald-700 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
                   Live Voice
@@ -197,14 +193,16 @@ export function VoiceMockup({ variant = "phone" }: VoiceMockupProps) {
             {langChip}
           </div>
 
-          {/* Prompt Message */}
           <div className="text-center py-2 shrink-0">
-            <p className="font-bold text-stone-900 text-base demo-fade" key={`prompt-${demoLang}`} lang={meta.htmlLang}>
+            <p
+              className="font-bold text-stone-900 text-base demo-fade"
+              key={`prompt-${demoLang}`}
+              lang={meta.htmlLang}
+            >
               {phone.prompt}
             </p>
           </div>
 
-          {/* Pulsing Voice Microphone Visualizer */}
           <div className="my-auto py-2 flex flex-col items-center">
             <div className="mic-wrap">
               <span className="mic-ring" />
@@ -213,17 +211,17 @@ export function VoiceMockup({ variant = "phone" }: VoiceMockupProps) {
                 <Mic className="w-7 h-7 text-white" />
               </div>
             </div>
-            <p className="text-xs font-semibold text-stone-500 mt-1 demo-fade" key={`tap-${demoLang}`} lang={meta.htmlLang}>
+            <p
+              className="text-xs font-semibold text-stone-500 mt-1 demo-fade"
+              key={`tap-${demoLang}`}
+              lang={meta.htmlLang}
+            >
               {phone.tap}
             </p>
           </div>
 
-          {/* Live Chat Conversation Flow */}
-          <div className="shrink-0">
-            {conversation}
-          </div>
+          <div className="shrink-0">{conversation}</div>
 
-          {/* Bottom Home Indicator Bar */}
           <div className="w-28 h-1 bg-stone-300 rounded-full mx-auto mt-3 shrink-0" />
         </div>
       </div>

@@ -21,7 +21,9 @@ npm run lint
 
 | Route | What it does |
 | --- | --- |
-| `/` | Landing page / Overview |
+| `/` | Public marketing landing page (Somali + English) |
+| `/dashboard` | Dashboard overview (sample opportunities + assistant) |
+| `/onboarding` | 5-step onboarding flow |
 | `/profile` | Name, city, interests — saved on this device only |
 | `/opportunities` | Searchable sample listings |
 | `/opportunities/[id]` | Opportunity details + assistant for that listing |
@@ -30,5 +32,18 @@ npm run lint
 | `/jobs` | Sample job cards |
 | `/assistant` | Talk (browser speech) or type |
 
-Listings are **samples** so the dashboard can be used end-to-end. Confirm anything real with the organisation. The assistant answers from those samples only — it will not invent a clinic or say you qualify.
+Landing CTAs link into onboarding / dashboard. Listings are **samples** so the UI can be used end-to-end. Confirm anything real with the organisation.
 
+## Belongs here
+
+- App Router pages: landing (Somali + English), dashboard screens
+- Talk control, mute/stop, captions
+- Language toggle
+- Calls Flask via `NEXT_PUBLIC_API_URL` (when wired)
+
+## Does not belong here
+
+- ElevenLabs API keys
+- `DATABASE_URL` or any Postgres client
+- Knowledge files as the runtime source of truth
+- Safety policy (Flask + `docs/privacy.md`)
