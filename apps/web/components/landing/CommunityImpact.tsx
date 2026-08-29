@@ -8,7 +8,6 @@ export function CommunityImpact() {
   return (
     <section className="section" id="about" aria-labelledby="about-title">
       <div className="wrap">
-        <p className="section-kicker">{t.about.kicker}</p>
         <h2 className="section-title" id="about-title">
           {t.about.title}
         </h2>

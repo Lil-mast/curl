@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Outfit, Plus_Jakarta_Sans } from "next/font/google";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Providers } from "./providers";
 import "./dashboard.css";
 import "./globals.css";
@@ -53,12 +52,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
       className={`${fraunces.variable} ${jakarta.variable} ${outfit.variable}`}
     >
-      <body>
-        <AntdRegistry>
-          <Providers>{children}</Providers>
-        </AntdRegistry>
+      <body suppressHydrationWarning>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

@@ -1,9 +1,9 @@
 "use client";
 
-import { GlobalOutlined, RobotOutlined, TeamOutlined } from "@ant-design/icons";
+import { Globe, Bot, Users } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
 
-const icons = [TeamOutlined, GlobalOutlined, RobotOutlined];
+const icons = [Users, Globe, Bot];
 
 export function MissionStrip() {
   const { t } = useLanguage();
