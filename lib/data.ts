@@ -179,18 +179,18 @@ export const opportunities: Opportunity[] = [
   }
 ];
 
-export function getOpportunity(id: string) {
-  return opportunities.find((item) => item.id === id) ?? null;
+export function getOpportunity(id: string, catalog: Opportunity[] = opportunities) {
+  return catalog.find((item) => item.id === id) ?? null;
 }
 
-export function byKind(kind: Opportunity["kind"]) {
-  return opportunities.filter((item) => item.kind === kind);
+export function byKind(kind: Opportunity["kind"], catalog: Opportunity[] = opportunities) {
+  return catalog.filter((item) => item.kind === kind);
 }
 
-export function searchOpportunities(query: string) {
+export function searchOpportunities(query: string, catalog: Opportunity[] = opportunities) {
   const q = query.trim().toLowerCase();
-  if (!q) return opportunities;
-  return opportunities.filter((item) => {
+  if (!q) return catalog;
+  return catalog.filter((item) => {
     const blob = [
       item.title,
       item.titleSo,

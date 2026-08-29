@@ -10,8 +10,9 @@ import {
   type ReactNode
 } from "react";
 import { answerQuestion } from "./assistant";
-import { getOpportunity } from "./data";
-import { EMPTY_PROFILE, type ChatMessage, type Lang, type Profile } from "./types";
+import { getOpportunity, opportunities as sampleOpportunities } from "./data";
+import { fetchLiveListings, mergeCatalog } from "./listings";
+import { EMPTY_PROFILE, type ChatMessage, type Lang, type Opportunity, type Profile } from "./types";
 
 const PROFILE_KEY = "maktab-profile";
 const SAVED_KEY = "maktab-saved";
@@ -28,6 +29,9 @@ type AppContextValue = {
   toggleSaved: (id: string) => void;
   lastOpportunityId: string;
   setLastOpportunityId: (id: string) => void;
+  listings: Opportunity[];
+  listingsLive: boolean;
+  listingsReady: boolean;
   messages: ChatMessage[];
   sendMessage: (text: string, focusId?: string | null) => void;
   clearChat: () => void;
@@ -50,6 +54,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile>(EMPTY_PROFILE);
   const [savedIds, setSavedIds] = useState<string[]>([]);
   const [lastOpportunityId, setLastId] = useState("evening-english");
+  const [listings, setListings] = useState<Opportunity[]>(sampleOpportunities);
+  const [listingsLive, setListingsLive] = useState(false);
+  const [listingsReady, setListingsReady] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   useEffect(() => {
@@ -65,11 +72,35 @@ export function AppProvider({ children }: { children: ReactNode }) {
         role: "assistant",
         text:
           storedLang === "so"
-            ? "Salaan. Waxaan ku caawin karaa tusaalooyinka fasalada, shaqooyinka, iyo deeqaha. Weydii, ama taabo Talk."
-            : "Salaan. I can help you look through sample classes, jobs, and scholarships. Type a question, or tap Talk."
+            ? "Salaan. Waxaan ku caawin karaa fasalada, shaqooyinka, iyo deeqaha. Weydii, ama taabo Talk."
+            : "Salaan. I can help you look through classes, jobs, and scholarships. Type a question, or tap Talk."
       }
     ]);
     setReady(true);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadListings() {
+      try {
+        const data = await fetchLiveListings();
+        if (cancelled) return;
+        setListings(mergeCatalog(data.items, sampleOpportunities));
+        setListingsLive(data.live);
+      } catch {
+        if (cancelled) return;
+        setListings(sampleOpportunities);
+        setListingsLive(false);
+      } finally {
+        if (!cancelled) setListingsReady(true);
+      }
+    }
+
+    loadListings();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const setLang = useCallback((next: Lang) => {
@@ -107,8 +138,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const trimmed = text.trim();
       if (!trimmed) return;
       const user: ChatMessage = { id: `u-${Date.now()}`, role: "user", text: trimmed };
-      const focus = focusId ? getOpportunity(focusId) : getOpportunity(lastOpportunityId);
-      const reply = answerQuestion(trimmed, lang, focus);
+      const targetId = focusId || lastOpportunityId;
+      const focus = getOpportunity(targetId, listings);
+      const reply = answerQuestion(trimmed, lang, focus, listings);
       setMessages((current) => [...current, user, reply]);
       if (typeof window !== "undefined" && "speechSynthesis" in window) {
         window.speechSynthesis.cancel();
@@ -118,7 +150,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         window.speechSynthesis.speak(utter);
       }
     },
-    [lang, lastOpportunityId]
+    [lang, lastOpportunityId, listings]
   );
 
   const clearChat = useCallback(() => {
@@ -136,6 +168,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       toggleSaved,
       lastOpportunityId,
       setLastOpportunityId,
+      listings,
+      listingsLive,
+      listingsReady,
       messages,
       sendMessage,
       clearChat
@@ -150,6 +185,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       toggleSaved,
       lastOpportunityId,
       setLastOpportunityId,
+      listings,
+      listingsLive,
+      listingsReady,
       messages,
       sendMessage,
       clearChat

@@ -19,12 +19,12 @@ export function Catalog({
   kinds?: OpportunityKind[];
   showDetails?: boolean;
 }) {
-  const { lang, setLang, profile } = useApp();
+  const { lang, setLang, profile, listings, listingsReady, listingsLive } = useApp();
   const [query, setQuery] = useState("");
   const [selectedKind, setSelectedKind] = useState<OpportunityKind | "all">(kinds ? kinds[0] : "all");
 
   const items = useMemo(() => {
-    let found = searchOpportunities(query);
+    let found = searchOpportunities(query, listings);
     if (kinds) {
       found = found.filter((item) => kinds.includes(item.kind));
     } else if (selectedKind !== "all") {
@@ -32,7 +32,7 @@ export function Catalog({
     }
     if (!profile.lookingFor.length) return found;
     return [...found].sort((a, b) => Number(profile.lookingFor.includes(b.kind)) - Number(profile.lookingFor.includes(a.kind)));
-  }, [kinds, selectedKind, profile.lookingFor, query]);
+  }, [kinds, selectedKind, profile.lookingFor, query, listings]);
 
   const featured = items[0] ?? null;
 
@@ -54,8 +54,8 @@ export function Catalog({
             </div>
             <p className="text-sm text-stone-600 pl-11 max-w-2xl">
               {lang === "so"
-                ? "Ka raadi fursadaha, deeqaha, iyo shaqooyinka ugu dhow ee la xaqiijiyay."
-                : "Explore verified opportunities, scholarships, classes, and career programs."}
+                ? "Ka raadi fursadaha iyo deeqaha tooska ah ee laga soo qaaday bogagga ururada iyo warbaahinta bulshada."
+                : "Explore live opportunities and scholarships pulled from organisation websites and public social posts."}
             </p>
           </div>
 
@@ -94,6 +94,12 @@ export function Catalog({
             </div>
           </div>
         </header>
+
+        {!listingsReady ? (
+          <p className="text-sm font-semibold text-emerald-800">{t("liveLoading", lang)}</p>
+        ) : listingsLive ? null : (
+          <p className="text-sm font-semibold text-stone-600">{t("liveFailed", lang)}</p>
+        )}
 
         {/* Filter Tabs (when viewing general opportunities directory) */}
         {!kinds && (
@@ -157,9 +163,9 @@ export function Catalog({
         {/* Quick Category Shortcuts */}
         {!kinds ? (
           <div className="grid gap-3 sm:grid-cols-3 pt-4">
-            <Shortcut href="/scholarships" label={t("scholarships", lang)} count={byKind("scholarship").length} />
-            <Shortcut href="/education" label={t("education", lang)} count={byKind("education").length} />
-            <Shortcut href="/jobs" label={t("jobs", lang)} count={byKind("job").length} />
+            <Shortcut href="/scholarships" label={t("scholarships", lang)} count={byKind("scholarship", listings).length} />
+            <Shortcut href="/education" label={t("education", lang)} count={byKind("education", listings).length} />
+            <Shortcut href="/jobs" label={t("jobs", lang)} count={byKind("job", listings).length} />
           </div>
         ) : null}
       </div>

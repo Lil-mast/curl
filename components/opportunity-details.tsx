@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { opportunities } from "@/lib/data";
 import { kindLabel, t } from "@/lib/i18n";
 import { useApp } from "@/lib/store";
 import type { Opportunity } from "@/lib/types";
@@ -10,14 +9,14 @@ import { IconHeart } from "./icons";
 
 export function OpportunityDetails({ item }: { item: Opportunity }) {
   const router = useRouter();
-  const { lang, savedIds, toggleSaved, setLastOpportunityId, sendMessage } = useApp();
+  const { lang, savedIds, toggleSaved, setLastOpportunityId, sendMessage, listings } = useApp();
   const saved = savedIds.includes(item.id);
   const title = lang === "so" ? item.titleSo : item.title;
   const summary = lang === "so" ? item.summarySo : item.summary;
   const audience = lang === "so" ? item.audienceSo : item.audience;
   const steps = lang === "so" ? item.stepsSo : item.steps;
   const bring = lang === "so" ? item.bringSo : item.bring;
-  const related = opportunities.filter((other) => other.kind === item.kind && other.id !== item.id).slice(0, 2);
+  const related = listings.filter((other) => other.kind === item.kind && other.id !== item.id).slice(0, 2);
 
   return (
     <section className="card overflow-hidden">
@@ -25,7 +24,9 @@ export function OpportunityDetails({ item }: { item: Opportunity }) {
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-gold">{t("details", lang)}</p>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <span className="chip bg-sage text-pine">{kindLabel[item.kind][lang]}</span>
-          <span className="text-xs font-semibold uppercase tracking-wide text-gold">{t("sample", lang)}</span>
+          <span className="text-xs font-semibold uppercase tracking-wide text-gold">
+            {item.live ? t("live", lang) : t("sample", lang)}
+          </span>
         </div>
         <h1 className="display mt-3 text-3xl leading-tight">{title}</h1>
         <p className="mt-1 text-sm text-sage">
@@ -70,7 +71,22 @@ export function OpportunityDetails({ item }: { item: Opportunity }) {
             <strong>{t("contact", lang)}:</strong> {item.contact}
           </p>
           <p className="mt-1 text-muted">
-            <strong>{t("source", lang)}:</strong> {item.source}
+            <strong>{t("source", lang)}:</strong>{" "}
+            {item.sourceUrl ? (
+              <a href={item.sourceUrl} target="_blank" rel="noreferrer" className="text-pine underline-offset-2 hover:underline">
+                {item.source}
+              </a>
+            ) : (
+              item.source
+            )}
+            {item.socialUrl ? (
+              <>
+                {" · "}
+                <a href={item.socialUrl} target="_blank" rel="noreferrer" className="text-pine underline-offset-2 hover:underline">
+                  {t("openSocial", lang)}
+                </a>
+              </>
+            ) : null}
           </p>
         </div>
 

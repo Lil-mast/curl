@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useApp } from "@/lib/store";
-import { t } from "@/lib/i18n";
 import {
   Mic,
   MicOff,
@@ -350,7 +349,7 @@ export default function AssistantPage() {
                           onClick={() => handleSend(text)}
                           className="text-left p-3 rounded-xl border border-stone-200 bg-white hover:border-emerald-800 hover:bg-emerald-50/30 transition-all text-xs font-medium text-stone-700 hover:text-stone-900"
                         >
-                          "{text}"
+                          &ldquo;{text}&rdquo;
                         </button>
                       );
                     })}

@@ -13,6 +13,14 @@ export const copy = {
   details: { en: "Opportunity details", so: "Faahfaahinta fursadda" } satisfies Dict,
   assistant: { en: "AI assistant", so: "Kaaliyaha AI" } satisfies Dict,
   sample: { en: "Sample listing", so: "Tusaale" } satisfies Dict,
+  live: { en: "Live listing", so: "Fursad toos ah" } satisfies Dict,
+  liveLoading: { en: "Refreshing live scholarships and opportunities…", so: "Waa la soo deeqayaa deeqaha iyo fursadaha tooska ah…" } satisfies Dict,
+  liveFailed: {
+    en: "Could not refresh live listings. Showing saved samples until the next visit.",
+    so: "Lama soo deeqin fursadaha tooska ah. Tusaalooyinka ayaa muuqda ilaa booqashada xigta."
+  } satisfies Dict,
+  openSource: { en: "Open source page", so: "Fur bogga asalka" } satisfies Dict,
+  openSocial: { en: "Open their social page", so: "Fur boggooda bulshada" } satisfies Dict,
   save: { en: "Save", so: "Kaydi" } satisfies Dict,
   saved: { en: "Saved", so: "La kaydiyay" } satisfies Dict,
   nextSteps: { en: "Next steps", so: "Tallaabooyinka xiga" } satisfies Dict,
@@ -31,8 +39,8 @@ export const copy = {
   } satisfies Dict,
   greeting: { en: "Salaan. What do you need next?", so: "Salaan. Maxaad u baahan tahay?" } satisfies Dict,
   sampleNote: {
-    en: "These are sample listings so you can try the dashboard. Confirm every time, place, and deadline with the organisation.",
-    so: "Kuwaani waa tusaalooyin si aad u tijaabiso dashboord-ka. Xaqiiji wakhtiga, goobta, iyo kama dambaysta ururka."
+    en: "Scholarships and opportunities are pulled live from organisation websites and public social posts when you open this dashboard. Confirm every deadline on their page. Maktab never says you qualify.",
+    so: "Deeqaha iyo fursadaha waxaa laga soo qaadaa bogagga ururada iyo qoraallada bulshada marka aad furto dashboord-ka. Xaqiiji kama dambaysta boggooda. Maktab marna ma odhanayo waad u qalantaa."
   } satisfies Dict,
   scholarshipCaution: {
     en: "Maktab never says you qualify. It only repeats what the organisation publishes.",

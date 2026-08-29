@@ -1,4 +1,4 @@
-import { opportunities } from "./data";
+import { opportunities as sampleOpportunities } from "./data";
 import type { ChatMessage, Lang, Opportunity } from "./types";
 
 const HIGH_STAKES =
@@ -9,7 +9,12 @@ function matchesQuery(item: Opportunity, q: string) {
   return q.split(/\s+/).filter(Boolean).some((word) => blob.includes(word));
 }
 
-export function answerQuestion(raw: string, lang: Lang, focus?: Opportunity | null): ChatMessage {
+export function answerQuestion(
+  raw: string,
+  lang: Lang,
+  focus?: Opportunity | null,
+  catalog: Opportunity[] = sampleOpportunities
+): ChatMessage {
   const text = raw.trim();
   const q = text.toLowerCase();
   const id = `a-${Date.now()}`;
@@ -46,11 +51,11 @@ export function answerQuestion(raw: string, lang: Lang, focus?: Opportunity | nu
       text:
         lang === "so"
           ? `${title} — tusaale. Tallaabada xigta: ${steps} Xaqiiji ${focus.org}. Ma oran karo inaad u qalanto.`
-          : `${title} — sample listing. Next step: ${steps} Confirm with ${focus.org}. I will not say you are eligible.`
+          : `${title} — ${focus.live ? "live listing" : "sample listing"}. Next step: ${steps} Confirm with ${focus.org}. I will not say you are eligible.`
     };
   }
 
-  const hits = opportunities.filter((item) => matchesQuery(item, q)).slice(0, 3);
+  const hits = catalog.filter((item) => matchesQuery(item, q)).slice(0, 3);
 
   if (!hits.length) {
     return {

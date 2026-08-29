@@ -21,6 +21,10 @@ export type Opportunity = {
   contact: string;
   source: string;
   featured?: boolean;
+  live?: boolean;
+  sourceUrl?: string;
+  socialUrl?: string;
+  publishedAt?: string;
 };
 
 export type Profile = {

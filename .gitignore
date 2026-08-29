@@ -1,3 +1,20 @@
+# Local environment — NEVER commit real secrets
+.env
+.env.local
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Test audio output
+services/voice/test_*.mp3
+
+# Node / Next
 node_modules/
 .next/
 out/
@@ -5,9 +22,6 @@ dist/
 .turbo/
 *.tsbuildinfo
 *.log
-.env
-.env.*
-!.env.example
 .DS_Store
 .vercel
 next-env.d.ts

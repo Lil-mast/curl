@@ -4,17 +4,33 @@ import Link from "next/link";
 import { AssistantPanel } from "@/components/assistant-panel";
 import { OpportunityCard } from "@/components/opportunity-card";
 import { OpportunityDetails } from "@/components/opportunity-details";
-import { getOpportunity, opportunities } from "@/lib/data";
+import { getOpportunity } from "@/lib/data";
 import { kindLabel, t } from "@/lib/i18n";
 import { useApp } from "@/lib/store";
 
 export default function OverviewPage() {
-  const { ready, lang, profile, lastOpportunityId, savedIds } = useApp();
-  const selected = getOpportunity(lastOpportunityId) ?? opportunities[0];
-  const rest = opportunities.filter((item) => item.id !== selected.id);
-  const saved = opportunities.filter((item) => savedIds.includes(item.id));
+  const { ready, lang, profile, lastOpportunityId, savedIds, listings, listingsLive, listingsReady } = useApp();
+  const last = getOpportunity(lastOpportunityId, listings);
+  const liveItems = listings.filter((item) => item.live);
+  const preferredKind = profile.lookingFor.includes("scholarship") ? "scholarship" : profile.lookingFor[0];
+  const fromKnownOrg = (item: (typeof listings)[number]) =>
+    /opportunity desk|scholars4dev|chevening|wusc|opportunities for youth|fundsforngos/i.test(item.org);
+  const selected =
+    (last?.live ? last : null) ??
+    liveItems.find((item) => item.kind === "scholarship" && fromKnownOrg(item)) ??
+    liveItems.find((item) => item.kind === preferredKind && fromKnownOrg(item)) ??
+    liveItems.find((item) => item.kind === "scholarship") ??
+    liveItems[0] ??
+    last ??
+    listings[0];
+  const rest = listings
+    .filter((item) => item.id !== selected?.id)
+    .sort((a, b) => Number(Boolean(b.live)) - Number(Boolean(a.live)))
+    .slice(0, 6);
+  const saved = listings.filter((item) => savedIds.includes(item.id));
+  const liveCount = liveItems.length;
 
-  if (!ready) {
+  if (!ready || !selected) {
     return <p className="text-sm text-muted">{lang === "so" ? "Waa la diyaarinayaa…" : "Loading your dashboard…"}</p>;
   }
 
@@ -36,6 +52,15 @@ export default function OverviewPage() {
                 ? `Aagga: ${profile.city}. ${t("sampleNote", lang)}`
                 : `Area: ${profile.city}. ${t("sampleNote", lang)}`
               : t("sampleNote", lang)}
+          </p>
+          <p className="mt-2 text-xs font-semibold text-pine-2">
+            {!listingsReady
+              ? t("liveLoading", lang)
+              : listingsLive
+                ? lang === "so"
+                  ? `${liveCount} fursadood oo toos ah oo laga soo qaaday bogag iyo warbaahinta bulshada`
+                  : `${liveCount} live listings from organisation websites and public social posts`
+                : t("liveFailed", lang)}
           </p>
         </div>
         <Link href="/profile" className="card max-w-sm px-4 py-3">
@@ -84,7 +109,7 @@ export default function OverviewPage() {
       <section className="grid gap-3 sm:grid-cols-3">
         <Link href="/scholarships" className="card px-4 py-5">
           <p className="text-xs font-bold uppercase tracking-wide text-muted">{t("scholarships", lang)}</p>
-          <p className="display mt-1 text-2xl">{lang === "so" ? "Deeqaha tusaalaha" : "Sample grants"}</p>
+          <p className="display mt-1 text-2xl">{lang === "so" ? "Deeqaha tooska ah" : "Live grants"}</p>
         </Link>
         <Link href="/education" className="card px-4 py-5">
           <p className="text-xs font-bold uppercase tracking-wide text-muted">{t("education", lang)}</p>

@@ -18,7 +18,9 @@ export function OpportunityCard({ item, href }: { item: Opportunity; href?: stri
       <div className="flex items-start justify-between gap-3">
         <div>
           <span className="chip">{kindLabel[item.kind][lang]}</span>
-          <span className="ml-2 text-xs font-semibold uppercase tracking-wide text-muted">{t("sample", lang)}</span>
+          <span className="ml-2 text-xs font-semibold uppercase tracking-wide text-muted">
+            {item.live ? t("live", lang) : t("sample", lang)}
+          </span>
         </div>
         <button
           type="button"
@@ -36,13 +38,20 @@ export function OpportunityCard({ item, href }: { item: Opportunity; href?: stri
       </p>
       <p className="text-sm leading-relaxed">{summary}</p>
       {item.deadline ? <p className="text-xs font-semibold text-pine-2">{item.deadline}</p> : null}
-      <Link
-        href={target}
-        className="btn btn-ghost self-start"
-        onClick={() => setLastOpportunityId(item.id)}
-      >
-        {t("featured", lang)}
-      </Link>
+      <div className="mt-auto flex flex-wrap gap-2">
+        <Link
+          href={target}
+          className="btn btn-ghost self-start"
+          onClick={() => setLastOpportunityId(item.id)}
+        >
+          {t("featured", lang)}
+        </Link>
+        {item.sourceUrl ? (
+          <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost self-start">
+            {t("openSource", lang)}
+          </a>
+        ) : null}
+      </div>
     </article>
   );
 }

@@ -1,18 +1,13 @@
-# Maktab AI — Render
-# Connect this repo in the Render dashboard and apply the Blueprint.
+# Maktab AI frontend — Render static site (CDN)
+# Dashboard: New → Blueprint → this repo → branch `frontend`
 
 services:
   - type: web
     name: maktab-web
-    runtime: node
-    plan: starter
+    runtime: static
+    branch: frontend
     buildCommand: npm ci && npm run build
-    startCommand: npm start
-    healthCheckPath: /
+    staticPublishPath: ./out
     envVars:
       - key: NODE_VERSION
         value: "22"
-      - key: NODE_ENV
-        value: production
-      - key: NEXT_PUBLIC_API_URL
-        sync: false
