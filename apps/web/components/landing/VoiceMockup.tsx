@@ -153,19 +153,19 @@ export function VoiceMockup({ variant = "phone" }: VoiceMockupProps) {
 
   return (
     <div className="relative mx-auto" aria-label="Maktab AI voice assistant preview">
-      <div className="w-[300px] sm:w-[324px] bg-[#1a1816] p-3 rounded-[46px] shadow-2xl ring-1 ring-stone-700/40 relative">
-        <div className="absolute -left-1 top-24 w-1 h-8 bg-stone-700 rounded-l-md" />
-        <div className="absolute -left-1 top-36 w-1 h-8 bg-stone-700 rounded-l-md" />
-        <div className="absolute -right-1 top-28 w-1 h-12 bg-stone-700 rounded-r-md" />
+      <div className="w-[300px] sm:w-[324px] bg-[#1a1816] p-3 rounded-[46px] shadow-2xl ring-1 ring-ink/40 relative">
+        <div className="absolute -left-1 top-24 w-1 h-8 bg-ink-soft rounded-l-md" />
+        <div className="absolute -left-1 top-36 w-1 h-8 bg-ink-soft rounded-l-md" />
+        <div className="absolute -right-1 top-28 w-1 h-12 bg-ink-soft rounded-r-md" />
 
-        <div className="bg-[#fffdf9] rounded-[38px] overflow-hidden p-3.5 flex flex-col justify-between min-h-[490px] shadow-inner relative border border-stone-200/60">
-          <div className="w-24 h-4 bg-stone-900 rounded-full mx-auto flex items-center justify-end px-2 mb-1.5 shrink-0">
-            <span className="w-1.5 h-1.5 rounded-full bg-stone-700" />
+        <div className="bg-[#fffdf9] rounded-[38px] overflow-hidden p-3.5 flex flex-col justify-between min-h-[490px] shadow-inner relative border border-line">
+          <div className="w-24 h-4 bg-ink rounded-full mx-auto flex items-center justify-end px-2 mb-1.5 shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-ink-soft" />
           </div>
 
-          <div className="flex items-center justify-between text-[11px] font-semibold text-stone-600 px-2 pt-0.5 pb-2 shrink-0">
+          <div className="flex items-center justify-between text-[11px] font-semibold text-ink-mute px-2 pt-0.5 pb-2 shrink-0">
             <span>9:41</span>
-            <div className="flex items-center gap-1.5 text-stone-700">
+            <div className="flex items-center gap-1.5 text-ink-soft">
               <Signal className="w-3 h-3" />
               <Wifi className="w-3 h-3" />
               <div className="flex items-center gap-0.5">
@@ -175,17 +175,17 @@ export function VoiceMockup({ variant = "phone" }: VoiceMockupProps) {
             </div>
           </div>
 
-          <div className="flex items-center justify-between px-1 py-1.5 pb-2 border-b border-stone-100 shrink-0">
+          <div className="flex items-center justify-between px-1 py-1.5 pb-2 border-b border-line shrink-0">
             <div className="flex items-center gap-2">
               <div className="phone-avatar" aria-hidden="true">
                 <Image src="/logo.png" alt="" width={28} height={28} />
               </div>
               <div>
-                <strong className="text-xs text-stone-900 block leading-tight">
+                <strong className="text-xs text-ink block leading-tight">
                   Maktab AI
                 </strong>
-                <span className="text-[10px] text-emerald-700 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                <span className="text-[10px] text-forest flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-forest animate-pulse" />
                   Live Voice
                 </span>
               </div>
@@ -195,7 +195,7 @@ export function VoiceMockup({ variant = "phone" }: VoiceMockupProps) {
 
           <div className="text-center py-2 shrink-0">
             <p
-              className="font-bold text-stone-900 text-base demo-fade"
+              className="font-bold text-ink text-base demo-fade"
               key={`prompt-${demoLang}`}
               lang={meta.htmlLang}
             >
@@ -212,7 +212,7 @@ export function VoiceMockup({ variant = "phone" }: VoiceMockupProps) {
               </div>
             </div>
             <p
-              className="text-xs font-semibold text-stone-500 mt-1 demo-fade"
+              className="text-xs font-semibold text-ink-mute mt-1 demo-fade"
               key={`tap-${demoLang}`}
               lang={meta.htmlLang}
             >
@@ -222,7 +222,7 @@ export function VoiceMockup({ variant = "phone" }: VoiceMockupProps) {
 
           <div className="shrink-0">{conversation}</div>
 
-          <div className="w-28 h-1 bg-stone-300 rounded-full mx-auto mt-3 shrink-0" />
+          <div className="w-28 h-1 bg-sand rounded-full mx-auto mt-3 shrink-0" />
         </div>
       </div>
     </div>

@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import { Providers } from "./providers";
-import "./dashboard.css";
 import "./globals.css";
+import "./dashboard.css";
 
 const fraunces = Fraunces({
   subsets: ["latin"],

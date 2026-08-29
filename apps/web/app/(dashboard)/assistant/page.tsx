@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useApp } from "@/lib/store";
-import { t } from "@/lib/i18n";
 import {
   Mic,
   MicOff,
@@ -39,12 +38,10 @@ export default function AssistantPage() {
   const listRef = useRef<HTMLDivElement>(null);
   const recRef = useRef<SpeechRec | null>(null);
 
-  // Auto-scroll chat on message update
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
   }, [messages.length]);
 
-  // Clean up speech synthesis & recognition
   useEffect(() => {
     return () => {
       recRef.current?.stop();
@@ -66,7 +63,7 @@ export default function AssistantPage() {
     if (!rec) {
       sendMessage(
         lang === "so"
-          ? "Mic-ga browser-ka ma shaqeeyo. Qor su’aashaada."
+          ? "Mic-ga browser-ka ma shaqeeyo. Qor su'aashaada."
           : "Voice input is not supported in this browser. Please type your question.",
         lastOpportunityId
       );
@@ -76,9 +73,7 @@ export default function AssistantPage() {
     rec.interimResults = false;
     rec.onresult = (event) => {
       const said = event.results[0]?.[0]?.transcript ?? "";
-      if (said) {
-        sendMessage(said, lastOpportunityId);
-      }
+      if (said) sendMessage(said, lastOpportunityId);
     };
     rec.onend = () => setListening(false);
     rec.onerror = () => setListening(false);
@@ -100,7 +95,6 @@ export default function AssistantPage() {
     setDraft("");
   };
 
-  // Filter user messages for the history sidebar
   const userHistory = messages.filter((m) => m.role === "user");
 
   const samplePrompts = [
@@ -111,304 +105,277 @@ export default function AssistantPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f6f1e8] text-stone-900 px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 md:pt-14 pb-16">
-      <div className="max-w-6xl mx-auto space-y-6">
-        {/* Top Header Bar with navigation & controls */}
-        <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-stone-200">
-          <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="p-2 rounded-full border border-stone-300 bg-white hover:bg-stone-50 transition-colors text-stone-700 hover:text-stone-900"
-              title="Return to home"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </Link>
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-stone-900">
-                {profile.displayName
-                  ? lang === "so"
-                    ? `Salaan, ${profile.displayName}`
-                    : `Welcome, ${profile.displayName}`
-                  : lang === "so"
-                    ? "Kaaliyaha Maktab AI"
-                    : "Maktab AI Assistant"}
-              </h1>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 self-end sm:self-auto">
-            {/* Mobile History Toggle */}
-            <button
-              type="button"
-              onClick={() => setShowHistoryMobile(!showHistoryMobile)}
-              className="lg:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-stone-300 bg-white text-xs font-semibold text-stone-700"
-            >
-              <History className="w-3.5 h-3.5" />
-              <span>{lang === "so" ? "Taariikhda" : "History"}</span>
-            </button>
-
-            {/* Language Switch */}
-            <div className="inline-flex rounded-full border border-stone-300 bg-white p-0.5 text-xs font-semibold">
-              <button
-                type="button"
-                onClick={() => setLang("en")}
-                className={`px-3 py-1 rounded-full transition-colors ${
-                  lang === "en" ? "bg-emerald-800 text-white" : "text-stone-700 hover:text-stone-900"
-                }`}
-              >
-                EN
-              </button>
-              <button
-                type="button"
-                onClick={() => setLang("so")}
-                className={`px-3 py-1 rounded-full transition-colors ${
-                  lang === "so" ? "bg-emerald-800 text-white" : "text-stone-700 hover:text-stone-900"
-                }`}
-              >
-                SO
-              </button>
-            </div>
-
-            {/* Voice Audio Speaker Toggle */}
-            <button
-              type="button"
-              onClick={() => {
-                const next = !soundEnabled;
-                setSoundEnabled(next);
-                if (!next && typeof window !== "undefined") {
-                  window.speechSynthesis?.cancel();
-                }
-              }}
-              className={`p-2 rounded-full border transition-colors ${
-                soundEnabled
-                  ? "border-emerald-800 bg-white text-emerald-800"
-                  : "border-stone-300 bg-white text-stone-400"
-              }`}
-              title={soundEnabled ? "Voice audio playback enabled" : "Voice audio muted"}
-            >
-              {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-            </button>
-
-            <Link
-              href="/profile"
-              className="p-2 rounded-full border border-stone-300 bg-white hover:bg-stone-50 transition-colors text-stone-700 hover:text-stone-900"
-              title="Profile & Preferences"
-            >
-              <Settings className="w-4 h-4" />
-            </Link>
-          </div>
-        </header>
-
-        {/* 2-Column Assistant Interface */}
-        <div className="grid grid-cols-1 lg:grid-cols-[20rem_1fr] gap-6 items-stretch">
-          {/* LEFT COLUMN: Conversation History */}
-          <aside
-            className={`${
-              showHistoryMobile ? "flex" : "hidden"
-            } lg:flex flex-col h-[34rem] bg-white border border-stone-200 rounded-3xl p-5 shadow-xs justify-between`}
+    <div className="space-y-6">
+      {/* Top Header */}
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-line">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/"
+            className="p-2 rounded-full border border-line bg-card hover:bg-paper transition-colors text-ink-soft"
+            title="Return to home"
           >
-            <div className="flex flex-col h-full overflow-hidden">
-              <div className="flex items-center justify-between pb-3 border-b border-stone-100 shrink-0">
-                <div className="flex items-center gap-2">
-                  <History className="w-4 h-4 text-emerald-800" />
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-stone-900">
-                    {lang === "so" ? "Taariikhda Wadahadalka" : "Conversation History"}
-                  </h2>
-                </div>
-                <button
-                  type="button"
-                  onClick={clearChat}
-                  className="text-stone-400 hover:text-red-600 transition-colors p-1 rounded-md"
-                  title="Clear History"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </div>
+            <ArrowLeft className="w-4 h-4" />
+          </Link>
+          <div>
+            <h1 className="display text-2xl md:text-3xl">
+              {profile.displayName
+                ? lang === "so"
+                  ? `Salaan, ${profile.displayName}`
+                  : `Welcome, ${profile.displayName}`
+                : lang === "so"
+                  ? "Kaaliyaha Maktab AI"
+                  : "Maktab AI Assistant"}
+            </h1>
+          </div>
+        </div>
 
-              {/* New Session Button */}
+        <div className="flex items-center gap-2 self-end sm:self-auto">
+          {/* Mobile History Toggle */}
+          <button
+            type="button"
+            onClick={() => setShowHistoryMobile(!showHistoryMobile)}
+            className="lg:hidden btn btn-ghost text-xs gap-1.5"
+          >
+            <History className="w-3.5 h-3.5" />
+            <span>{lang === "so" ? "Taariikhda" : "History"}</span>
+          </button>
+
+          {/* Language Switch */}
+          <div className="flex gap-1">
+            <button
+              type="button"
+              onClick={() => setLang("en")}
+              className={`btn ${lang === "en" ? "btn-primary" : "btn-ghost"}`}
+            >
+              EN
+            </button>
+            <button
+              type="button"
+              onClick={() => setLang("so")}
+              className={`btn ${lang === "so" ? "btn-primary" : "btn-ghost"}`}
+            >
+              SO
+            </button>
+          </div>
+
+          {/* Sound toggle */}
+          <button
+            type="button"
+            onClick={() => {
+              const next = !soundEnabled;
+              setSoundEnabled(next);
+              if (!next && typeof window !== "undefined") window.speechSynthesis?.cancel();
+            }}
+            className={`btn btn-ghost ${soundEnabled ? "text-pine" : "text-muted"}`}
+            title={soundEnabled ? "Voice audio enabled" : "Voice audio muted"}
+          >
+            {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+          </button>
+
+          <Link
+            href="/profile"
+            className="btn btn-ghost"
+            title="Profile & Preferences"
+          >
+            <Settings className="w-4 h-4" />
+          </Link>
+        </div>
+      </header>
+
+      {/* 2-Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-[20rem_1fr] gap-6 items-stretch">
+        {/* History Sidebar */}
+        <aside
+          className={`${
+            showHistoryMobile ? "flex" : "hidden"
+          } lg:flex flex-col h-[34rem] card p-5 justify-between`}
+        >
+          <div className="flex flex-col h-full overflow-hidden">
+            <div className="flex items-center justify-between pb-3 border-b border-line shrink-0">
+              <div className="flex items-center gap-2">
+                <History className="w-4 h-4 text-pine" />
+                <h2 className="text-xs font-bold uppercase tracking-wider text-ink">
+                  {lang === "so" ? "Taariikhda Wadahadalka" : "Conversation History"}
+                </h2>
+              </div>
               <button
                 type="button"
                 onClick={clearChat}
-                className="mt-3 shrink-0 w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-stone-200 bg-stone-50/80 hover:bg-stone-100 text-xs font-semibold text-stone-800 transition-colors"
+                className="text-muted hover:text-clay transition-colors p-1 rounded-md"
+                title="Clear History"
               >
-                <Plus className="w-3.5 h-3.5 text-emerald-800" />
-                <span>{lang === "so" ? "Wadahadal Cusub" : "New Conversation"}</span>
+                <Trash2 className="w-3.5 h-3.5" />
               </button>
-
-              {/* History List */}
-              <div className="mt-3 flex-1 space-y-1.5 overflow-y-auto pr-1">
-                {userHistory.length === 0 ? (
-                  <div className="h-full flex flex-col items-center justify-center py-8 text-center px-2">
-                    <MessageSquare className="w-7 h-7 text-stone-300 mx-auto mb-2" />
-                    <p className="text-xs text-stone-500 font-medium">
-                      {lang === "so" ? "Wadahadal hore ma jiro" : "No past conversations yet"}
-                    </p>
-                    <p className="text-[11px] text-stone-400 mt-1">
-                      {lang === "so"
-                        ? "Cod ama qoraal ku bilow"
-                        : "Tap mic or type to begin"}
-                    </p>
-                  </div>
-                ) : (
-                  userHistory.map((item, idx) => (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => handleSend(item.text)}
-                      className="w-full text-left p-3 rounded-xl hover:bg-stone-50 border border-stone-100 hover:border-stone-200 transition-colors flex items-start gap-2.5 group"
-                    >
-                      <span className="w-5 h-5 rounded-full bg-stone-100 group-hover:bg-emerald-50 text-[10px] font-bold text-stone-500 group-hover:text-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
-                        {idx + 1}
-                      </span>
-                      <span className="text-xs text-stone-700 group-hover:text-stone-900 line-clamp-2 font-medium">
-                        {item.text}
-                      </span>
-                    </button>
-                  ))
-                )}
-              </div>
             </div>
-          </aside>
 
-          {/* RIGHT COLUMN: Active Assistant Card */}
-          <main className="bg-white border border-stone-200 rounded-3xl shadow-xs overflow-hidden flex flex-col h-[34rem]">
-            {/* Card Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-stone-100 bg-[#fffdf9]">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-emerald-800 text-white font-bold flex items-center justify-center text-sm shadow-xs">
-                  M
-                </div>
-                <div>
-                  <h2 className="font-bold text-stone-900 text-sm">Maktab AI</h2>
-                  <p className="text-xs text-stone-500">
-                    {listening
-                      ? lang === "so"
-                        ? "Waa la dhageysanayaa..."
-                        : "Listening to your voice..."
-                      : lang === "so"
-                        ? "Diyaar u ah su'aalahaaga"
-                        : "Ready for your voice or typing"}
+            <button
+              type="button"
+              onClick={clearChat}
+              className="mt-3 shrink-0 btn btn-ghost w-full justify-center gap-2 text-xs"
+            >
+              <Plus className="w-3.5 h-3.5 text-pine" />
+              <span>{lang === "so" ? "Wadahadal Cusub" : "New Conversation"}</span>
+            </button>
+
+            <div className="mt-3 flex-1 space-y-1.5 overflow-y-auto pr-1">
+              {userHistory.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center py-8 text-center px-2">
+                  <MessageSquare className="w-7 h-7 text-muted mx-auto mb-2" />
+                  <p className="text-xs text-muted font-medium">
+                    {lang === "so" ? "Wadahadal hore ma jiro" : "No past conversations yet"}
+                  </p>
+                  <p className="text-[11px] text-muted mt-1">
+                    {lang === "so" ? "Cod ama qoraal ku bilow" : "Tap mic or type to begin"}
                   </p>
                 </div>
-              </div>
-
-              {/* Status Badge */}
-              <div className="flex items-center gap-2">
-                {listening && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-red-700 text-xs font-semibold animate-pulse">
-                    <span className="w-2 h-2 rounded-full bg-red-600"></span>
-                    <span>{lang === "so" ? "Dhageysi" : "Recording"}</span>
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Chat Messages Body */}
-            <div
-              ref={listRef}
-              role="log"
-              aria-live="polite"
-              className="flex-1 p-6 overflow-y-auto space-y-4 bg-[#fcfbfa]"
-            >
-              {messages.map((message) => {
-                const isUser = message.role === "user";
-                return (
-                  <div
-                    key={message.id}
-                    className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}
+              ) : (
+                userHistory.map((item, idx) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => handleSend(item.text)}
+                    className="w-full text-left p-3 rounded-xl hover:bg-paper border border-line hover:border-sand transition-colors flex items-start gap-2.5 group"
                   >
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-1 px-1">
-                      {isUser ? (lang === "so" ? "Adiga" : "You") : "Maktab AI"}
+                    <span className="w-5 h-5 rounded-full bg-paper group-hover:bg-sage text-[10px] font-bold text-muted group-hover:text-pine flex items-center justify-center shrink-0 mt-0.5">
+                      {idx + 1}
                     </span>
-                    <div
-                      className={`max-w-[85%] sm:max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-                        isUser
-                          ? "bg-emerald-800 text-white font-medium rounded-br-xs shadow-xs"
-                          : "bg-white border border-stone-200 text-stone-800 rounded-bl-xs shadow-xs"
-                      }`}
-                    >
-                      <p className="whitespace-pre-wrap">{message.text}</p>
-                    </div>
-                  </div>
-                );
-              })}
-
-              {/* Suggested Quick Prompts (if chat is short) */}
-              {messages.length <= 1 && (
-                <div className="pt-4 space-y-2">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-stone-500 uppercase tracking-wider">
-                    <Sparkles className="w-3.5 h-3.5 text-emerald-800" />
-                    <span>{lang === "so" ? "Tusaalooyin Su'aalo ah" : "Try asking"}</span>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {samplePrompts.map((p) => {
-                      const text = lang === "so" ? p.so : p.en;
-                      return (
-                        <button
-                          key={p.en}
-                          type="button"
-                          onClick={() => handleSend(text)}
-                          className="text-left p-3 rounded-xl border border-stone-200 bg-white hover:border-emerald-800 hover:bg-emerald-50/30 transition-all text-xs font-medium text-stone-700 hover:text-stone-900"
-                        >
-                          "{text}"
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
+                    <span className="text-xs text-ink-soft group-hover:text-ink line-clamp-2 font-medium">
+                      {item.text}
+                    </span>
+                  </button>
+                ))
               )}
             </div>
+          </div>
+        </aside>
 
-            {/* Input Footer with Microphone & Text Input */}
-            <div className="p-4 border-t border-stone-200 bg-white">
-              <form
-                className="flex items-center gap-2"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSend();
-                }}
-              >
-                {/* Voice Mic Button */}
-                <button
-                  type="button"
-                  onClick={listening ? stopTalk : startTalk}
-                  className={`relative p-3 rounded-full transition-all shrink-0 ${
-                    listening
-                      ? "bg-red-600 text-white ring-4 ring-red-100"
-                      : "bg-emerald-800 hover:bg-emerald-900 text-white shadow-xs"
-                  }`}
-                  aria-label={listening ? "Stop listening" : "Start speaking"}
-                  title={listening ? "Stop voice listening" : "Speak to Maktab AI"}
-                >
-                  {listening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-                </button>
-
-                {/* Text Field */}
-                <input
-                  type="text"
-                  value={draft}
-                  onChange={(e) => setDraft(e.target.value)}
-                  placeholder={
-                    lang === "so"
-                      ? "Qor su’aal ama taabo mic-ga..."
-                      : "Type a question or tap the mic to speak..."
-                  }
-                  className="flex-1 px-4 py-3 rounded-full border border-stone-300 bg-stone-50 text-stone-900 text-sm focus:outline-none focus:border-emerald-800 focus:bg-white transition-colors"
-                />
-
-                {/* Send Button */}
-                <button
-                  type="submit"
-                  disabled={!draft.trim()}
-                  className="p-3 rounded-full bg-stone-900 text-white disabled:opacity-40 disabled:cursor-not-allowed hover:bg-stone-800 transition-colors shrink-0"
-                  aria-label="Send message"
-                >
-                  <Send className="w-4 h-4" />
-                </button>
-              </form>
+        {/* Main Chat Card */}
+        <main className="card overflow-hidden flex flex-col h-[34rem]">
+          {/* Card Header */}
+          <div className="flex items-center justify-between px-5 py-4 border-b border-line bg-card">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-pine text-paper font-bold flex items-center justify-center text-sm">
+                M
+              </div>
+              <div>
+                <h2 className="font-bold text-ink text-sm">Maktab AI</h2>
+                <p className="text-xs text-muted">
+                  {listening
+                    ? lang === "so"
+                      ? "Waa la dhageysanayaa..."
+                      : "Listening to your voice..."
+                    : lang === "so"
+                      ? "Diyaar u ah su'aalahaaga"
+                      : "Ready for your voice or typing"}
+                </p>
+              </div>
             </div>
-          </main>
-        </div>
+            {listening && (
+              <span className="chip bg-terracotta-soft text-terracotta animate-pulse text-xs">
+                {lang === "so" ? "Dhageysi" : "Recording"}
+              </span>
+            )}
+          </div>
+
+          {/* Messages */}
+          <div
+            ref={listRef}
+            role="log"
+            aria-live="polite"
+            className="flex-1 p-5 overflow-y-auto space-y-4 bg-paper/40"
+          >
+            {messages.map((message) => {
+              const isUser = message.role === "user";
+              return (
+                <div
+                  key={message.id}
+                  className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}
+                >
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted mb-1 px-1">
+                    {isUser ? (lang === "so" ? "Adiga" : "You") : "Maktab AI"}
+                  </span>
+                  <div
+                    className={`max-w-[85%] sm:max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                      isUser
+                        ? "bg-pine text-paper font-medium"
+                        : "bg-card border border-line text-ink"
+                    }`}
+                  >
+                    <p className="whitespace-pre-wrap">{message.text}</p>
+                  </div>
+                </div>
+              );
+            })}
+
+            {messages.length <= 1 && (
+              <div className="pt-4 space-y-2">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-muted uppercase tracking-wider">
+                  <Sparkles className="w-3.5 h-3.5 text-pine" />
+                  <span>{lang === "so" ? "Tusaalooyin Su'aalo ah" : "Try asking"}</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {samplePrompts.map((p) => {
+                    const text = lang === "so" ? p.so : p.en;
+                    return (
+                      <button
+                        key={p.en}
+                        type="button"
+                        onClick={() => handleSend(text)}
+                        className="text-left p-3 rounded-xl border border-line bg-card hover:border-sand hover:bg-paper transition-all text-xs font-medium text-ink-soft hover:text-ink"
+                      >
+                        &ldquo;{text}&rdquo;
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Input */}
+          <div className="p-4 border-t border-line bg-card">
+            <form
+              className="flex items-center gap-2"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSend();
+              }}
+            >
+              <button
+                type="button"
+                onClick={listening ? stopTalk : startTalk}
+                className={`btn shrink-0 ${listening ? "bg-terracotta text-paper" : "btn-primary"}`}
+                aria-label={listening ? "Stop listening" : "Start speaking"}
+              >
+                {listening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+              </button>
+
+              <label className="sr-only" htmlFor="assistant-input">
+                {lang === "so" ? "Qor su'aal..." : "Type a question..."}
+              </label>
+              <input
+                id="assistant-input"
+                type="text"
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder={
+                  lang === "so"
+                    ? "Qor su'aal ama taabo mic-ga..."
+                    : "Type a question or tap the mic..."
+                }
+              />
+
+              <button
+                type="submit"
+                disabled={!draft.trim()}
+                className="btn btn-primary shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
+                aria-label="Send message"
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </form>
+          </div>
+        </main>
       </div>
     </div>
   );

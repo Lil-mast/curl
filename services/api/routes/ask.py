@@ -38,6 +38,5 @@ def ask():
         "disclaimer": result.disclaimer,
     }), 200
 
-
 def _error(code: str, message: str, status: int):
     return jsonify({"error": {"code": code, "message": message}}), status

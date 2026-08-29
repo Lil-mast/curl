@@ -17,13 +17,13 @@ export function Hero() {
           <div className="hero-actions">
             <Link
               href="/onboarding"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-emerald-800 text-white font-semibold text-sm hover:bg-emerald-900 transition-colors shadow-sm"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-forest text-white font-semibold text-sm hover:bg-forest-deep transition-colors shadow-sm"
             >
               {t.hero.primary} →
             </Link>
             <Link
               href="/opportunities"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-stone-300 text-stone-900 font-semibold text-sm hover:bg-stone-100/60 transition-colors"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-line text-ink font-semibold text-sm hover:bg-paper transition-colors"
             >
               {t.hero.secondary}
             </Link>
