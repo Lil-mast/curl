@@ -1,3 +1,9 @@
+# Frontend
+node_modules/
+.next/
+out/
+dist/
+.turbo/
 
 # Local environment — NEVER commit real secrets
 .env
