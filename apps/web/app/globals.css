@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   --paper: #f6f1e8;
   --paper-deep: #ece4d6;
@@ -19,6 +21,18 @@
   --header: 72px;
   --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
   --font-body: var(--font-jakarta), "Segoe UI", sans-serif;
+
+  --color-ink: #13261f;
+  --color-paper: #f3eee4;
+  --color-card: #fffdf8;
+  --color-pine: #17352c;
+  --color-pine-2: #21483c;
+  --color-clay: #c4532a;
+  --color-clay-dark: #9b3c1c;
+  --color-sage: #d7e2d1;
+  --color-gold: #e3c178;
+  --color-muted: #5e6d66;
+  --color-line: #e2d8cb;
 }
 
 * {
@@ -28,7 +42,6 @@
 html {
   scroll-behavior: smooth;
 }
-
 html,
 body {
   margin: 0;
@@ -156,36 +169,40 @@ img {
   font-weight: 500;
 }
 
-/* Navbar */
+/* Navbar - Ovular floating pill */
 .nav {
   position: sticky;
-  top: 0;
+  top: 0.75rem;
   z-index: 50;
-  min-height: var(--header);
   display: flex;
-  align-items: center;
-  background: rgba(246, 241, 232, 0.78);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid transparent;
-  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  padding: env(safe-area-inset-top, 0) 0 0;
-}
-
-.nav.scrolled {
-  background: rgba(251, 247, 241, 0.9);
-  border-bottom-color: var(--line);
-  box-shadow: 0 8px 24px rgba(28, 25, 21, 0.04);
+  justify-content: center;
+  padding: 0 1rem;
+  pointer-events: none;
 }
 
 .nav-inner {
-  width: min(var(--max), calc(100% - 2rem));
+  pointer-events: auto;
+  width: min(100%, 56rem);
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   min-width: 0;
+  background: rgba(251, 247, 241, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(28, 25, 21, 0.1);
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 4px 20px rgba(28, 25, 21, 0.04);
+  transition: all 0.25s ease;
+}
+
+.nav.scrolled .nav-inner {
+  background: rgba(255, 253, 249, 0.98);
+  border-color: rgba(28, 25, 21, 0.16);
+  box-shadow: 0 8px 30px rgba(28, 25, 21, 0.08);
 }
 
 .nav-inner .brand {
@@ -649,8 +666,9 @@ img {
 }
 
 .impact-item {
-  padding: 1.25rem;
-  border-top: 2px solid var(--forest);
+  padding: 1.5rem;
+  border-radius: 20px;
+  border: 1px solid var(--line);
   background: var(--white);
 }
 
@@ -1121,4 +1139,108 @@ img {
   50% {
     height: 20px;
   }
+}
+
+/* Dashboard helper styles */
+.display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+}
+
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: 1.25rem;
+  box-shadow: 0 1px 0 rgba(19, 38, 31, 0.04);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--color-clay);
+  color: #fffaf4;
+}
+
+.btn-primary:hover {
+  background: var(--color-clay-dark);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-line);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--color-sage);
+  color: var(--color-pine);
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid var(--color-line);
+  background: #fff;
+  border-radius: 0.9rem;
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+  color: inherit;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid #c4532a55;
+  border-color: var(--color-clay);
+}
+
+.prose-steps {
+  counter-reset: step;
+}
+
+.prose-steps li {
+  position: relative;
+  padding-left: 2.2rem;
+  margin-bottom: 0.7rem;
+}
+
+.prose-steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 999px;
+  background: var(--color-pine);
+  color: #f6f1e8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
 }

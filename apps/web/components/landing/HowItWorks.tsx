@@ -1,9 +1,9 @@
 "use client";
 
-import { AudioOutlined, RobotOutlined, RocketOutlined } from "@ant-design/icons";
+import { Mic, Bot, Rocket } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
 
-const icons = [AudioOutlined, RobotOutlined, RocketOutlined];
+const icons = [Mic, Bot, Rocket];
 
 export function HowItWorks() {
   const { t } = useLanguage();
@@ -11,7 +11,6 @@ export function HowItWorks() {
   return (
     <section className="section" id="how-it-works" aria-labelledby="how-title">
       <div className="wrap">
-        <p className="section-kicker">{t.how.kicker}</p>
         <h2 className="section-title" id="how-title">
           {t.how.title}
         </h2>

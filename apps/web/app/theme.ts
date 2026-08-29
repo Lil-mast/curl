@@ -1,6 +1,4 @@
-import type { ThemeConfig } from "antd";
-
-export const maktabTheme: ThemeConfig = {
+export const maktabTheme = {
   token: {
     colorPrimary: "#134e3a",
     colorInfo: "#134e3a",

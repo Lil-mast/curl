@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { Fraunces, Plus_Jakarta_Sans, Outfit } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
 
@@ -13,6 +12,12 @@ const fraunces = Fraunces({
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-jakarta",
+  display: "swap",
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
   display: "swap",
 });
 
@@ -34,11 +39,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${jakarta.variable}`}>
-      <body>
-        <AntdRegistry>
-          <Providers>{children}</Providers>
-        </AntdRegistry>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+      className={`${fraunces.variable} ${jakarta.variable} ${outfit.variable}`}
+    >
+      <body suppressHydrationWarning>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

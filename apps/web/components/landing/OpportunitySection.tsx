@@ -1,16 +1,17 @@
 "use client";
 
+import Link from "next/link";
 import {
-  ArrowRightOutlined,
-  BookOutlined,
-  GlobalOutlined,
-  ReadOutlined,
-  SolutionOutlined,
-} from "@ant-design/icons";
-import { Card, Col, Row } from "antd";
+  ArrowRight,
+  BookOpen,
+  Globe,
+  GraduationCap,
+  Briefcase,
+} from "lucide-react";
 import { useLanguage } from "./LanguageContext";
 
-const icons = [ReadOutlined, SolutionOutlined, BookOutlined, GlobalOutlined];
+const icons = [GraduationCap, Briefcase, BookOpen, Globe];
+const links = ["/scholarships", "/jobs", "/education", "/opportunities"];
 
 export function OpportunitySection() {
   const { t } = useLanguage();
@@ -18,36 +19,34 @@ export function OpportunitySection() {
   return (
     <section className="section" id="opportunities" aria-labelledby="opp-title">
       <div className="wrap">
-        <p className="section-kicker">{t.opportunities.kicker}</p>
         <h2 className="section-title" id="opp-title">
           {t.opportunities.title}
         </h2>
         <p className="section-lede">{t.opportunities.lede}</p>
-        <Row
-          gutter={[
-            { xs: 12, sm: 16, md: 18 },
-            { xs: 12, sm: 16, md: 18 },
-          ]}
-          className="opp-row"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
           {t.opportunities.cards.map((card, index) => {
             const Icon = icons[index];
+            const href = links[index];
             return (
-              <Col xs={24} sm={12} lg={6} key={card.title}>
-                <Card className="opp-card" variant="outlined" hoverable>
-                  <div className="opp-icon" aria-hidden="true">
-                    <Icon />
+              <Link
+                href={href}
+                key={card.title}
+                className="bg-white border border-stone-200 hover:border-[#e4d6c3] rounded-2xl p-5 flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-md"
+              >
+                <div>
+                  <div className="opp-icon mb-4" aria-hidden="true">
+                    <Icon className="w-6 h-6 text-[#b85c38]" />
                   </div>
-                  <h3>{card.title}</h3>
-                  <p>{card.text}</p>
-                  <span className="opp-more">
-                    {t.opportunities.more} <ArrowRightOutlined />
-                  </span>
-                </Card>
-              </Col>
+                  <h3 className="font-bold text-stone-900 mb-2">{card.title}</h3>
+                  <p className="text-sm text-stone-600 mb-4">{card.text}</p>
+                </div>
+                <span className="opp-more text-xs font-bold text-emerald-800 inline-flex items-center gap-1">
+                  {t.opportunities.more} <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </Link>
             );
           })}
-        </Row>
+        </div>
       </div>
     </section>
   );

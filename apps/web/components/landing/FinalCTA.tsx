@@ -1,6 +1,4 @@
-"use client";
-
-import { Button } from "antd";
+import Link from "next/link";
 import { useLanguage } from "./LanguageContext";
 
 const HEADLINES = [
@@ -43,18 +41,13 @@ export function FinalCTA() {
             </p>
           </div>
           <p className="cta-lede">{t.cta.lede}</p>
-          <Button
-            className="cta-button"
-            size="large"
-            href="/assistant"
-            style={{
-              background: "#f6f1e8",
-              color: "#1c1915",
-              border: 0,
-            }}
+          <Link
+            href="/onboarding"
+            className="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white text-black font-bold text-sm hover:bg-stone-100 transition-all shadow-md active:scale-95"
+            style={{ color: "#000000", backgroundColor: "#ffffff" }}
           >
             {t.cta.button} →
-          </Button>
+          </Link>
         </div>
       </div>
     </section>

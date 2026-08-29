@@ -1,7 +1,4 @@
-"use client";
-
-import { AudioOutlined, GlobalOutlined, MobileOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import Link from "next/link";
 import { useLanguage } from "./LanguageContext";
 import { VoiceMockup } from "./VoiceMockup";
 
@@ -12,30 +9,24 @@ export function Hero() {
     <section className="hero" id="top">
       <div className="wrap hero-grid">
         <div className="hero-copy">
-          <p className="eyebrow">{t.hero.kicker}</p>
           <h1>
             {t.hero.title1}
             <br />
             <em>{t.hero.title2}</em>
           </h1>
           <div className="hero-actions">
-            <Button type="primary" size="large" href="/assistant">
+            <Link
+              href="/onboarding"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-emerald-800 text-white font-semibold text-sm hover:bg-emerald-900 transition-colors shadow-sm"
+            >
               {t.hero.primary} →
-            </Button>
-            <Button size="large" href="/opportunities">
+            </Link>
+            <Link
+              href="/opportunities"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-stone-300 text-stone-900 font-semibold text-sm hover:bg-stone-100/60 transition-colors"
+            >
               {t.hero.secondary}
-            </Button>
-          </div>
-          <div className="hero-note">
-            <span>
-              <AudioOutlined /> {t.hero.note1}
-            </span>
-            <span>
-              <MobileOutlined /> {t.hero.note2}
-            </span>
-            <span>
-              <GlobalOutlined /> {t.hero.note3}
-            </span>
+            </Link>
           </div>
         </div>
         <VoiceMockup />
