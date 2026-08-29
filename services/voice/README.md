@@ -1,7 +1,7 @@
 # services/voice
 
 ElevenLabs integration boundary. Imported/called from **Flask**, not from Next.js.
-
+sjaijkcnjkncjnlma
 ## Belongs here
 
 - Speech-to-text (**T2.2**)

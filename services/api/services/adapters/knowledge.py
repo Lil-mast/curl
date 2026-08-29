@@ -1,32 +1,35 @@
-"""
-Knowledge retrieval adapter — integration boundary for Faith's module (T3.3).
+"""Flask adapter for knowledge retrieval.
 
-Flask calls retrieve(); Faith implements the real version backed by Neon.
-
-CONTRACT
---------
-retrieve(query, language, domain) -> RetrievalResult
-
-RetrievalResult.entries  : list of KnowledgeEntry
-RetrievalResult.found    : bool  (False when nothing matched)
-
-KnowledgeEntry fields:
-    title       str
-    body        str   (in the requested language where available)
-    source_org  str
-    contact     str | None
-    source_url  str | None
-    domain      str
-
-Faith: implement KnowledgeRetriever by subclassing BaseKnowledgeRetriever
-and passing an instance to create_orchestrator() in app.py.
+Faith owns the Postgres-backed knowledge data. This adapter keeps the Flask
+orchestrator contract stable while mapping database rows onto the existing
+`retrieve(query, language, domain) -> RetrievalResult` interface.
 """
 
+from __future__ import annotations
+
+import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
+from typing import Any
+
+def _tokenize(text: str) -> list[str]:
+    return [token for token in re.findall(r"[A-Za-z0-9']+", text.lower()) if token]
 
 
-@dataclass
+def _compose_contact(row: dict[str, Any]) -> str | None:
+    parts = [
+        row.get("contact_name"),
+        row.get("contact_phone"),
+        row.get("contact_email"),
+        row.get("contact_url"),
+    ]
+    values = [str(part).strip() for part in parts if part not in (None, "")]
+    if not values:
+        return None
+    return " | ".join(values)
+
+
+@dataclass(frozen=True)
 class KnowledgeEntry:
     title: str
     body: str
@@ -42,7 +45,7 @@ class RetrievalResult:
 
     @property
     def found(self) -> bool:
-        return len(self.entries) > 0
+        return bool(self.entries)
 
 
 class BaseKnowledgeRetriever(ABC):
@@ -53,15 +56,92 @@ class BaseKnowledgeRetriever(ABC):
         language: str,
         domain: str | None,
     ) -> RetrievalResult:
-        """Query Neon and return matching knowledge entries."""
+        raise NotImplementedError
+
+
+class KnowledgeRetriever(BaseKnowledgeRetriever):
+    def retrieve(
+        self,
+        query: str,
+        language: str,
+        domain: str | None,
+    ) -> RetrievalResult:
+        cleaned = (query or "").strip()
+        if not cleaned:
+            return RetrievalResult()
+
+        tokens = _tokenize(cleaned)
+        tsquery = " & ".join(tokens) if tokens else cleaned.lower()
+
+        from services.api.db.connection import get_connection
+
+        with get_connection() as conn:
+            rows = conn.execute(
+                """
+                SELECT
+                    title,
+                    body,
+                    source_name,
+                    domain,
+                    source_url,
+                    contact_name,
+                    contact_phone,
+                    contact_email,
+                    contact_url,
+                    ts_rank_cd(search_vector, to_tsquery('simple', %s)) AS rank,
+                    last_reviewed
+                FROM knowledge_entries
+                WHERE language = %s
+                  AND (%s::text IS NULL OR domain = %s)
+                  AND (
+                      search_vector @@ to_tsquery('simple', %s)
+                      OR title ILIKE %s
+                      OR summary ILIKE %s
+                      OR body ILIKE %s
+                  )
+                ORDER BY rank DESC, last_reviewed DESC
+                LIMIT 3
+                """,
+                (
+                    tsquery,
+                    language,
+                    domain,
+                    domain,
+                    tsquery,
+                    f"%{cleaned}%",
+                    f"%{cleaned}%",
+                    f"%{cleaned}%",
+                ),
+            ).fetchall()
+
+        entries = [
+            KnowledgeEntry(
+                title=str(row["title"]),
+                body=str(row["body"]),
+                source_org=str(row["source_name"]),
+                domain=str(row["domain"]),
+                contact=_compose_contact(row),
+                source_url=row.get("source_url"),
+            )
+            for row in rows
+        ]
+        return RetrievalResult(entries=entries)
 
 
 class KnowledgeRetrieverNotReady(BaseKnowledgeRetriever):
-    """
-    Placeholder used until Faith's Neon-backed implementation is wired in.
-    Always returns an empty result so the orchestrator can exercise the
-    'no knowledge found' path without a database connection.
-    """
-
-    def retrieve(self, query: str, language: str, domain: str | None) -> RetrievalResult:
+    def retrieve(
+        self,
+        query: str,
+        language: str,
+        domain: str | None,
+    ) -> RetrievalResult:
         return RetrievalResult()
+
+
+__all__ = [
+    "BaseKnowledgeRetriever",
+    "KnowledgeEntry",
+    "KnowledgeRetriever",
+    "KnowledgeRetrieverNotReady",
+    "RetrievalResult",
+]
