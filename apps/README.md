@@ -1,9 +1,10 @@
-# Maktab AI web
+# Apps
 
-Next.js dashboard lives in `apps/web`.
+The Maktab **web client is the repository root**, not this folder. Run and deploy it from `..`:
 
 ```bash
-cd apps/web
 npm install
 npm run dev
 ```
+
+Details: [FRONTEND.md](../FRONTEND.md). Use this folder only if we add another client later.

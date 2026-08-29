@@ -8,13 +8,13 @@ Ship a URL a partner can open on a phone. Cursor is for building; **Render** run
 
 | Service | Where | Root |
 | --- | --- | --- |
-| Frontend | Render **Web Service** (Node) | `apps/web` — Next.js |
+| Frontend | Render **Web Service** (Node) | repo root — Next.js (`render.yaml`) |
 | Backend | Render **Web Service** (Python) | `services/api` — Flask |
 | Database | **Neon** (not Render) | `DATABASE_URL` on the Flask service |
 
 ## Checklist
 
-- [ ] Next.js service on Render (build: Next; start: Next production)
+- [ ] Next.js service on Render from repo root (`npm ci && npm run build` / `npm start`) — see `render.yaml`
 - [ ] Flask service on Render (gunicorn or equivalent; `/health`)
 - [ ] Neon project + database; Flask `DATABASE_URL` set in Render
 - [ ] `NEXT_PUBLIC_API_URL` = Flask public URL

@@ -65,7 +65,7 @@ Locked. Details live in [`docs/stack.md`](./docs/stack.md) and [`docs/architectu
 
 | Layer | Choice | Role |
 | --- | --- | --- |
-| Frontend | [Next.js](https://nextjs.org) | Phone UI: Talk, captions, language, results (`apps/web`) |
+| Frontend | [Next.js](https://nextjs.org) | Phone UI at the repo root (`app/`, `components/`). Deploy with [`render.yaml`](./render.yaml) |
 | Backend | Python ([Flask](https://flask.palletsprojects.com)) | API, safety, knowledge lookup, ElevenLabs calls (`services/api`) |
 | Database | [PostgreSQL](https://www.postgresql.org) on [Neon](https://neon.tech) | Knowledge index + anonymous session stats — not recordings |
 | Voice | [ElevenLabs](https://elevenlabs.io) | Speech-to-text, text-to-speech, conversational voice |
@@ -93,37 +93,21 @@ Example:
 
 ## Repository structure
 
-This repo is **structure and planning only** until implementation starts. Folders describe where future work will live. There is no application code yet.
+The Next.js app lives at the **repository root**. Flask and knowledge stay under `services/` and `knowledge/`.
 
 ```
 .
-├── README.md                 # This file — vision, stack, map of the project
-├── TASKS.md                  # Ordered work: phases, owners, acceptance criteria
-├── docs/                     # Decisions and design (not code)
-│   ├── product.md            # Users, flows, success metrics
-│   ├── stack.md              # Next.js, Flask, Neon, ElevenLabs, Render
-│   ├── architecture.md       # System sketch and boundaries
-│   ├── data.md               # What Postgres stores (and what it must not)
-│   ├── voice.md              # ElevenLabs, languages, conversation rules
-│   ├── knowledge.md          # What content we trust and how we keep it current
-│   ├── privacy.md            # Data we will and will not keep
-│   └── deploy.md             # Render + Neon, environments, go-live checklist
-├── apps/
-│   └── web/                  # Next.js app (talk button, transcript, results)
-├── services/
-│   ├── api/                  # Flask: sessions, knowledge lookup, safety
-│   └── voice/                # ElevenLabs wiring used by Flask (STT / TTS)
-├── knowledge/                # Curated content the assistant is allowed to use
-│   ├── education/
-│   ├── services/
-│   ├── jobs/
-│   ├── scholarships/
-│   ├── cv-help/
-│   └── community/
-└── ops/                      # Render notes, env var list, runbooks (no secrets)
+├── README.md
+├── FRONTEND.md / BACKEND.md / ARCHITECTURE.md
+├── render.yaml               # Render Blueprint
+├── app/  components/  lib/   # Next.js
+├── apps/README.md
+├── services/api  services/voice
+├── knowledge/
+└── ops/
 ```
 
-Each folder has a short README explaining **what belongs there** and **which tasks own it**.
+Run locally: `npm install && npm run dev`. Deploy: connect this repo on Render (Blueprint `render.yaml`).
 
 ---
 
