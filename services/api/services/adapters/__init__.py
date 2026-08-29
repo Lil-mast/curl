@@ -1,5 +1,1 @@
-"""Knowledge adapter package."""
-
-from .knowledge import BaseKnowledgeRetriever, KnowledgeEntry, KnowledgeRetriever
-
-__all__ = ["BaseKnowledgeRetriever", "KnowledgeEntry", "KnowledgeRetriever"]
+"""Knowledge and voice adapters for the Flask orchestrator."""

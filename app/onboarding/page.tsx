@@ -46,14 +46,7 @@ export default function OnboardingPage() {
       try {
         localStorage.setItem(
           "maktab_onboarding_prefs",
-          JSON.stringify({
-            language: selectedLang,
-            goal: selectedGoal,
-            location,
-            userRole,
-            voicePace,
-            email,
-          })
+          JSON.stringify({ language: selectedLang, goal: selectedGoal, location, userRole, voicePace, email })
         );
       } catch {
         // ignore
@@ -64,74 +57,74 @@ export default function OnboardingPage() {
   };
 
   const handleNext = () => {
-    if (step < 5) {
-      setStep(step + 1);
-    } else {
-      handleFinish();
-    }
+    if (step < 5) setStep(step + 1);
+    else handleFinish();
   };
 
   const handleBack = () => {
-    if (step > 1) {
-      setStep(step - 1);
-    } else {
-      router.push("/");
-    }
+    if (step > 1) setStep(step - 1);
+    else router.push("/");
   };
 
+  /* Shared option button styles */
+  const optionBase = "w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between";
+  const optionActive = "border-forest bg-white shadow-sm ring-1 ring-forest";
+  const optionIdle = "border-line bg-white/60 hover:bg-white";
+
+  const iconWrap = "w-9 h-9 rounded-full bg-paper flex items-center justify-center text-forest";
+
   return (
-    <div className="min-h-screen bg-[#f6f1e8] text-stone-900 flex flex-col justify-between p-4 sm:p-8">
-      {/* Top Header */}
+    <div className="min-h-screen bg-paper text-ink flex flex-col justify-between p-4 sm:p-8">
+      {/* Header */}
       <header className="max-w-xl w-full mx-auto flex items-center justify-between py-2">
         <button
           type="button"
           onClick={handleBack}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-600 hover:text-stone-900 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-ink-soft hover:text-ink transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>{step === 1 ? "Exit to Home" : "Back"}</span>
         </button>
 
-        <span className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+        <span className="text-xs font-bold uppercase tracking-wider text-terracotta">
           Step {step} of 5
         </span>
 
         <button
           type="button"
           onClick={handleFinish}
-          className="text-xs font-semibold text-stone-500 hover:text-stone-800 transition-colors"
+          className="text-xs font-semibold text-ink-mute hover:text-ink transition-colors"
         >
           Skip to Assistant
         </button>
       </header>
 
-      {/* Main Questionnaire */}
+      {/* Main */}
       <main className="max-w-xl w-full mx-auto my-auto py-6">
-        {/* Sleek Segmented Progress Line */}
+        {/* Progress bar */}
         <div className="flex items-center gap-1.5 w-full mb-8">
           {[1, 2, 3, 4, 5].map((s) => (
             <div
               key={s}
               className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                s <= step ? "bg-emerald-800" : "bg-stone-300/60"
+                s <= step ? "bg-forest" : "bg-sand"
               }`}
             />
           ))}
         </div>
 
-        {/* STEP 1: LANGUAGE PREFERENCE */}
+        {/* STEP 1 */}
         {step === 1 && (
           <div className="space-y-6">
             <div>
               <span className="eyebrow block mb-1">Language Selection</span>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
+              <h1 className="display text-2xl sm:text-3xl">
                 Which language do you prefer to speak and hear?
               </h1>
-              <p className="text-sm text-stone-600 mt-2">
+              <p className="text-sm text-ink-soft mt-2">
                 Dooro luqadda aad doorbideyso inaad ku hadasho ama wax ku akhrisato.
               </p>
             </div>
-
             <div className="space-y-3">
               {[
                 { id: "so", title: "Af-Soomaali (Somali)", desc: "Somali first with bilingual support" },
@@ -142,41 +135,34 @@ export default function OnboardingPage() {
                   key={item.id}
                   type="button"
                   onClick={() => setSelectedLang(item.id as "so" | "en" | "both")}
-                  className={`w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between ${
-                    selectedLang === item.id
-                      ? "border-emerald-800 bg-white shadow-sm ring-1 ring-emerald-800"
-                      : "border-stone-300 bg-white/60 hover:bg-white"
-                  }`}
+                  className={`${optionBase} ${selectedLang === item.id ? optionActive : optionIdle}`}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-stone-100 flex items-center justify-center text-emerald-800">
-                      <Globe className="w-4 h-4" />
-                    </div>
+                    <div className={iconWrap}><Globe className="w-4 h-4" /></div>
                     <div>
-                      <p className="font-bold text-sm text-stone-900">{item.title}</p>
-                      <p className="text-xs text-stone-500">{item.desc}</p>
+                      <p className="font-bold text-sm text-ink">{item.title}</p>
+                      <p className="text-xs text-ink-mute">{item.desc}</p>
                     </div>
                   </div>
-                  {selectedLang === item.id && <Check className="w-4 h-4 text-emerald-800" />}
+                  {selectedLang === item.id && <Check className="w-4 h-4 text-forest" />}
                 </button>
               ))}
             </div>
           </div>
         )}
 
-        {/* STEP 2: PRIMARY GOAL */}
+        {/* STEP 2 */}
         {step === 2 && (
           <div className="space-y-6">
             <div>
               <span className="eyebrow block mb-1">Your Focus</span>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
+              <h1 className="display text-2xl sm:text-3xl">
                 What are you looking for help with today?
               </h1>
-              <p className="text-sm text-stone-600 mt-2">
+              <p className="text-sm text-ink-soft mt-2">
                 Maxaad doonaysaa in Maktab AI ay kaa caawiso maanta?
               </p>
             </div>
-
             <div className="space-y-2.5">
               {[
                 { id: "job", icon: Briefcase, title: "Jobs & Employment", desc: "Warehouses, local hiring, shift work" },
@@ -191,22 +177,16 @@ export default function OnboardingPage() {
                     key={item.id}
                     type="button"
                     onClick={() => setSelectedGoal(item.id as OpportunityKind)}
-                    className={`w-full text-left p-3.5 rounded-2xl border transition-all flex items-center justify-between ${
-                      isSelected
-                        ? "border-emerald-800 bg-white shadow-sm ring-1 ring-emerald-800"
-                        : "border-stone-300 bg-white/60 hover:bg-white"
-                    }`}
+                    className={`${optionBase} ${isSelected ? optionActive : optionIdle}`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-emerald-800">
-                        <Icon className="w-4 h-4" />
-                      </div>
+                      <div className={iconWrap}><Icon className="w-4 h-4" /></div>
                       <div>
-                        <p className="font-bold text-sm text-stone-900">{item.title}</p>
-                        <p className="text-xs text-stone-500">{item.desc}</p>
+                        <p className="font-bold text-sm text-ink">{item.title}</p>
+                        <p className="text-xs text-ink-mute">{item.desc}</p>
                       </div>
                     </div>
-                    {isSelected && <Check className="w-4 h-4 text-emerald-800" />}
+                    {isSelected && <Check className="w-4 h-4 text-forest" />}
                   </button>
                 );
               })}
@@ -214,32 +194,26 @@ export default function OnboardingPage() {
           </div>
         )}
 
-        {/* STEP 3: LOCATION */}
+        {/* STEP 3 */}
         {step === 3 && (
           <div className="space-y-6">
             <div>
               <span className="eyebrow block mb-1">Location</span>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
-                Where are you located?
-              </h1>
-              <p className="text-sm text-stone-600 mt-2">
+              <h1 className="display text-2xl sm:text-3xl">Where are you located?</h1>
+              <p className="text-sm text-ink-soft mt-2">
                 This helps us match local community centers and nearby opportunities.
               </p>
             </div>
-
             <div className="space-y-3">
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="Enter your city or neighborhood..."
-                className="w-full p-3.5 rounded-2xl border border-stone-300 bg-white text-stone-900 text-sm focus:outline-none focus:border-emerald-800"
               />
-
-              <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider">
+              <p className="text-xs font-semibold text-ink-mute uppercase tracking-wider">
                 Or pick a quick hub:
               </p>
-
               <div className="grid grid-cols-2 gap-2">
                 {[
                   "Minneapolis / St. Paul",
@@ -255,8 +229,8 @@ export default function OnboardingPage() {
                     onClick={() => setLocation(city)}
                     className={`p-3 rounded-xl border text-xs font-medium text-left transition-colors ${
                       location === city
-                        ? "border-emerald-800 bg-white font-bold text-emerald-950"
-                        : "border-stone-200 bg-white/60 hover:bg-white text-stone-700"
+                        ? "border-forest bg-white font-bold text-forest-deep"
+                        : "border-line bg-white/60 hover:bg-white text-ink-soft"
                     }`}
                   >
                     {city}
@@ -267,19 +241,18 @@ export default function OnboardingPage() {
           </div>
         )}
 
-        {/* STEP 4: BENEFICIARY */}
+        {/* STEP 4 */}
         {step === 4 && (
           <div className="space-y-6">
             <div>
               <span className="eyebrow block mb-1">Beneficiary</span>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
+              <h1 className="display text-2xl sm:text-3xl">
                 Who are you seeking opportunities for?
               </h1>
-              <p className="text-sm text-stone-600 mt-2">
+              <p className="text-sm text-ink-soft mt-2">
                 Yaa u raadinaysaa fursadahan iyo adeegyadan?
               </p>
             </div>
-
             <div className="space-y-3">
               {[
                 { id: "For myself", icon: User, title: "For myself", desc: "Personal job search, classes, or grants" },
@@ -293,22 +266,16 @@ export default function OnboardingPage() {
                     key={item.id}
                     type="button"
                     onClick={() => setUserRole(item.id)}
-                    className={`w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between ${
-                      isSelected
-                        ? "border-emerald-800 bg-white shadow-sm ring-1 ring-emerald-800"
-                        : "border-stone-300 bg-white/60 hover:bg-white"
-                    }`}
+                    className={`${optionBase} ${isSelected ? optionActive : optionIdle}`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-stone-100 flex items-center justify-center text-emerald-800">
-                        <Icon className="w-4 h-4" />
-                      </div>
+                      <div className={iconWrap}><Icon className="w-4 h-4" /></div>
                       <div>
-                        <p className="font-bold text-sm text-stone-900">{item.title}</p>
-                        <p className="text-xs text-stone-500">{item.desc}</p>
+                        <p className="font-bold text-sm text-ink">{item.title}</p>
+                        <p className="text-xs text-ink-mute">{item.desc}</p>
                       </div>
                     </div>
-                    {isSelected && <Check className="w-4 h-4 text-emerald-800" />}
+                    {isSelected && <Check className="w-4 h-4 text-forest" />}
                   </button>
                 );
               })}
@@ -316,22 +283,21 @@ export default function OnboardingPage() {
           </div>
         )}
 
-        {/* STEP 5: PREFERENCES & OPTIONAL ACCOUNT */}
+        {/* STEP 5 */}
         {step === 5 && (
           <div className="space-y-6">
             <div>
               <span className="eyebrow block mb-1">Preferences</span>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-stone-900">
-                Voice pace & access preferences
+              <h1 className="display text-2xl sm:text-3xl">
+                Voice pace &amp; access preferences
               </h1>
-              <p className="text-sm text-stone-600 mt-2">
+              <p className="text-sm text-ink-soft mt-2">
                 No sign-up is required. You can continue anonymously as a guest.
               </p>
             </div>
-
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-stone-600 block">
+                <label className="text-xs font-bold uppercase tracking-wider text-ink-soft block">
                   Voice Speech Pace
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -342,8 +308,8 @@ export default function OnboardingPage() {
                       onClick={() => setVoicePace(pace)}
                       className={`p-3 rounded-xl border text-xs font-medium text-center transition-colors ${
                         voicePace === pace
-                          ? "border-emerald-800 bg-white font-bold text-emerald-950"
-                          : "border-stone-200 bg-white/60 hover:bg-white text-stone-700"
+                          ? "border-forest bg-white font-bold text-forest-deep"
+                          : "border-line bg-white/60 hover:bg-white text-ink-soft"
                       }`}
                     >
                       <Volume2 className="w-4 h-4 mx-auto mb-1 opacity-70" />
@@ -353,8 +319,8 @@ export default function OnboardingPage() {
                 </div>
               </div>
 
-              <div className="space-y-2 pt-2 border-t border-stone-200">
-                <label className="text-xs font-bold uppercase tracking-wider text-stone-600 block">
+              <div className="space-y-2 pt-2 border-t border-line">
+                <label className="text-xs font-bold uppercase tracking-wider text-ink-soft block">
                   Optional: Save session by email
                 </label>
                 <input
@@ -362,9 +328,8 @@ export default function OnboardingPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter email if you wish to save your profile (optional)"
-                  className="w-full p-3.5 rounded-2xl border border-stone-300 bg-white text-stone-900 text-sm focus:outline-none focus:border-emerald-800"
                 />
-                <p className="text-[11px] text-stone-500">
+                <p className="text-[11px] text-ink-mute">
                   Zero voice recordings are saved. Your preferences stay on this device.
                 </p>
               </div>
@@ -372,12 +337,12 @@ export default function OnboardingPage() {
           </div>
         )}
 
-        {/* Action Button */}
+        {/* CTA */}
         <div className="mt-8 flex items-center justify-end gap-3">
           <button
             type="button"
             onClick={handleNext}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-sm shadow-sm transition-colors"
+            className="btn btn-primary w-full sm:w-auto gap-2 px-8 py-3.5"
           >
             <span>{step === 5 ? "Start Talking with Maktab AI" : "Continue"}</span>
             <ArrowRight className="w-4 h-4" />
@@ -385,8 +350,7 @@ export default function OnboardingPage() {
         </div>
       </main>
 
-      {/* Bottom Footer */}
-      <footer className="max-w-xl w-full mx-auto text-center py-2 text-xs text-stone-400">
+      <footer className="max-w-xl w-full mx-auto text-center py-2 text-xs text-ink-mute">
         <p>Maktab AI (مكتب) — Privacy First</p>
       </footer>
     </div>

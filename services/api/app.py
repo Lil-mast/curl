@@ -7,7 +7,6 @@ Render: gunicorn --bind 0.0.0.0:$PORT services.api.app:app
 from __future__ import annotations
 
 import os
-
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -24,15 +23,50 @@ def _cors_origins() -> list[str]:
     return [part.strip() for part in raw.split(",") if part.strip()]
 
 
-def create_app() -> Flask:
+def _default_voice_service():
+    """Use ElevenLabsVoiceAdapter when the API key is present; stub otherwise."""
+    if os.getenv("ELEVENLABS_API_KEY"):
+        from services.api.services.adapters.elevenlabs_voice import ElevenLabsVoiceAdapter
+
+        return ElevenLabsVoiceAdapter()
+    from services.api.services.adapters.voice import VoiceServiceNotReady
+
+    return VoiceServiceNotReady()
+
+
+def _default_knowledge_retriever():
+    from services.api.services.adapters.knowledge import KnowledgeRetriever, KnowledgeRetrieverNotReady
+
+    try:
+        return KnowledgeRetriever()
+    except Exception:
+        return KnowledgeRetrieverNotReady()
+
+
+def create_app(knowledge_retriever=None, voice_service=None):
+    from services.api.routes.ask import ask_bp
+    from services.api.routes.audio import audio_bp
+    from services.api.routes.health import health_bp
+    from services.api.routes.voice import voice_bp
+    from services.api.services.orchestrator import Orchestrator
+
     app = Flask(__name__)
     app.secret_key = os.getenv("FLASK_SECRET_KEY") or "dev-only-change-me"
     CORS(app, origins=_cors_origins())
 
-    @app.get("/health")
+    app.orchestrator = Orchestrator(
+        knowledge=knowledge_retriever or _default_knowledge_retriever(),
+        voice=voice_service or _default_voice_service(),
+    )
+
+    app.register_blueprint(health_bp)
+    app.register_blueprint(ask_bp)
+    app.register_blueprint(voice_bp)
+    app.register_blueprint(audio_bp)
+
     @app.get("/api/health")
-    def health():
-        payload: dict = {"ok": True, "service": "maktab-api"}
+    def api_health():
+        payload: dict = {"ok": True, "status": "ok", "service": "maktab-api"}
         try:
             from services.api.db.health import check_db_health
 
@@ -55,6 +89,18 @@ def create_app() -> Flask:
             return jsonify({"query": query, "language": language, "domain": domain, "results": results})
         except Exception as exc:
             return jsonify({"error": str(exc), "results": []}), 503
+
+    @app.errorhandler(404)
+    def not_found(_):
+        return jsonify({"error": {"code": "NOT_FOUND", "message": "route not found"}}), 404
+
+    @app.errorhandler(405)
+    def method_not_allowed(_):
+        return jsonify({"error": {"code": "METHOD_NOT_ALLOWED", "message": "method not allowed"}}), 405
+
+    @app.errorhandler(500)
+    def internal_error(_):
+        return jsonify({"error": {"code": "INTERNAL_ERROR", "message": "an unexpected error occurred"}}), 500
 
     return app
 

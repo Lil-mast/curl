@@ -4,6 +4,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConditionalShell } from "@/components/conditional-shell";
 import { Providers } from "./providers";
 import "./globals.css";
+import "./dashboard.css";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -26,7 +27,17 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Maktab AI — Your Voice. Your Opportunity.",
   description:
-    "Maktab AI helps refugees and underserved communities discover scholarships, jobs, education and opportunities — simply by speaking. Somali and English."
+    "Maktab AI helps refugees and underserved communities discover scholarships, jobs, education and opportunities — simply by speaking. Somali and English.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
+  openGraph: {
+    title: "Maktab AI — Your Voice. Your Opportunity.",
+    description:
+      "Voice-first AI for scholarships, jobs, education, and community resources — in Somali and English.",
+    images: ["/logo.png"],
+  },
 };
 
 export const viewport: Viewport = {

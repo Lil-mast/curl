@@ -31,16 +31,16 @@ export function OpportunitySection() {
               <Link
                 href={href}
                 key={card.title}
-                className="bg-white border border-stone-200 hover:border-[#e4d6c3] rounded-2xl p-5 flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-md"
+                className="bg-white border border-line hover:border-sand rounded-2xl p-5 flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-md"
               >
                 <div>
                   <div className="opp-icon mb-4" aria-hidden="true">
-                    <Icon className="w-6 h-6 text-[#b85c38]" />
+                    <Icon className="w-6 h-6 text-terracotta" />
                   </div>
-                  <h3 className="font-bold text-stone-900 mb-2">{card.title}</h3>
-                  <p className="text-sm text-stone-600 mb-4">{card.text}</p>
+                  <h3 className="font-bold text-ink mb-2">{card.title}</h3>
+                  <p className="text-sm text-ink-soft mb-4">{card.text}</p>
                 </div>
-                <span className="opp-more text-xs font-bold text-emerald-800 inline-flex items-center gap-1">
+                <span className="opp-more text-xs font-bold text-forest inline-flex items-center gap-1">
                   {t.opportunities.more} <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </Link>

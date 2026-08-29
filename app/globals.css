@@ -164,26 +164,29 @@ img {
   gap: 10px;
   text-decoration: none;
   color: var(--ink);
+  line-height: 0;
+}
+
+.brand-logo {
+  display: block;
+  width: auto;
+  height: 48px;
+  max-width: min(168px, 46vw);
+  object-fit: contain;
 }
 
 .brand-mark {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   display: block;
   flex-shrink: 0;
-  color: var(--forest);
+  object-fit: contain;
 }
 
-.brand-name {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-}
-
-.brand-name span {
-  color: var(--forest);
-  font-weight: 500;
+@media (max-width: 480px) {
+  .brand-logo {
+    height: 40px;
+  }
 }
 
 /* Navbar - Ovular floating pill */
@@ -224,10 +227,6 @@ img {
 
 .nav-inner .brand {
   min-width: 0;
-}
-
-.nav-inner .brand-name {
-  white-space: nowrap;
 }
 
 .nav-links {
@@ -387,12 +386,19 @@ img {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: var(--forest);
+  background: var(--white);
+  border: 1px solid var(--line);
   color: var(--cream);
   display: grid;
   place-items: center;
-  font-family: var(--font-display);
-  font-size: 0.78rem;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.phone-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .lang-chip {
@@ -831,13 +837,8 @@ img {
     width: min(var(--max), calc(100% - 1.25rem));
   }
 
-  .brand-name {
-    font-size: 1.05rem;
-  }
-
-  .brand-mark {
-    width: 30px;
-    height: 30px;
+  .brand-logo {
+    height: 36px;
   }
 
   .hero-actions .ant-btn {
@@ -1156,108 +1157,4 @@ img {
   50% {
     height: 20px;
   }
-}
-
-/* Dashboard helper styles */
-.display {
-  font-family: var(--font-display);
-  font-optical-sizing: auto;
-}
-
-.card {
-  background: var(--color-card);
-  border: 1px solid var(--color-line);
-  border-radius: 1.25rem;
-  box-shadow: 0 1px 0 rgba(19, 38, 31, 0.04);
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  min-height: 2.75rem;
-  padding: 0.55rem 1rem;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 0.92rem;
-  transition: transform 0.12s ease, background 0.12s ease;
-}
-
-.btn:active {
-  transform: translateY(1px);
-}
-
-.btn-primary {
-  background: var(--color-clay);
-  color: #fffaf4;
-}
-
-.btn-primary:hover {
-  background: var(--color-clay-dark);
-}
-
-.btn-ghost {
-  background: transparent;
-  color: var(--color-ink);
-  border: 1px solid var(--color-line);
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  padding: 0.2rem 0.65rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  background: var(--color-sage);
-  color: var(--color-pine);
-}
-
-input,
-textarea,
-select {
-  width: 100%;
-  border: 1px solid var(--color-line);
-  background: #fff;
-  border-radius: 0.9rem;
-  padding: 0.7rem 0.85rem;
-  font: inherit;
-  color: inherit;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: 2px solid #c4532a55;
-  border-color: var(--color-clay);
-}
-
-.prose-steps {
-  counter-reset: step;
-}
-
-.prose-steps li {
-  position: relative;
-  padding-left: 2.2rem;
-  margin-bottom: 0.7rem;
-}
-
-.prose-steps li::before {
-  counter-increment: step;
-  content: counter(step);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 1.55rem;
-  height: 1.55rem;
-  border-radius: 999px;
-  background: var(--color-pine);
-  color: #f6f1e8;
-  font-size: 0.75rem;
-  font-weight: 700;
-  display: grid;
-  place-items: center;
 }
